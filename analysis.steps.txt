@@ -7,7 +7,7 @@ $ bash
 $ PATH=$PATH:/lustre/scratch108/pathogen/fy2/page/analysis_coregenome/pneumoscript
 
 #put the FILO tools in PATH
-$ PATH=$PATH:/lustre/scratch108/pathogen/fy2/page/analysis_coregenome/pneumoscript
+$ PATH=$PATH:/software/pathogen/external/apps/usr/local/filo/bin/
 
 
 #you can use this script to extract CDS features from an EMBL
