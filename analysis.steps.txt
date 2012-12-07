@@ -1,0 +1,40 @@
+#this analysis has been run on exactly 40 isolates.
+
+#work in "bash", not in tcsh
+$ bash
+
+#put the custom scripts in PATH
+$ PATH=$PATH:/lustre/scratch108/pathogen/fy2/page/analysis_coregenome/pneumoscript
+
+#put the FILO tools in PATH
+$ PATH=$PATH:/lustre/scratch108/pathogen/fy2/page/analysis_coregenome/pneumoscript
+
+
+#you can use this script to extract CDS features from an EMBL
+#and to write them in a multifasta file (one fasta file per isolate)
+$ convert_to_fasta.pl [EMBL FILE] > [OUT FASTA FILE]
+
+#put all the FASTA file into one file
+$ cat *.fasta > AllTogether.fasta
+
+$ formatdb -i AllTogether.fasta -p F -o T -V T
+
+
+#run this for each FASTA file
+$ bsub -q normal -o bsub.out -e bsub.err 'blastall -p blastn -d AllTogether.fasta -i [INPUT FASTA] -m 8 -e 0.0001 -o [BLAST TABULAR OUTPUT]'
+
+#concat the blast outputs
+$ cat *.blast.outputs > All.versus.All.m8
+
+#create a 'gg file' for each isolate, as required by the orthoMCL 1.4
+$ embl2orthomcl_gg.pl [EMBL FILE] > [OUTPUT GG FILE]
+
+#concat all the GG files into one:
+$ cat *.gg > All.gg
+
+#run orthoMCL, this will create a file called 'all_orthomcl.out'
+$ bsub -R "select[type==X86_64 && mem > 3000] rusage[mem=3000]" -M3000000 -o out -e out.err 'orthomcl.pl --mode 3 --blast_file All.versus.All.m8 --gg_file All.gg -m8blast'
+
+#get the clusters with at least 40 isolates
+#group by cluster, show the frequency of gene name and its colour in the cluster:
+$ grep "40 taxa" all_orthomcl.out | ortho_stats.pl | sort -k1,1n -k3,3 -k4,4n | groupBy -g 1,3,4 -c 4 -o count | less

@@ -1,21 +1,20 @@
+#work in "bash", not in tcsh
 $ bash
 
-  553  cp ~/PAGeDeliverables/delivery_28_08_2012/gottberg/data.tar.gz gott.tar.gz
-  554  cp ~/PAGeDeliverables/delivery_28_08_2012/collard/data.tar.gz coll.tar.gz
-  555  cp ~/PAGeDeliverables/delivery_28_08_2012/antonio/data.tar.gz anto.tar.gz
-  562  cp ~/PAGeDeliverables/delivery_28_08_2012/everett/data.tar.gz ever.tar.gz
+cp ~/PAGeDeliverables/delivery_28_08_2012/gottberg/data.tar.gz gott.tar.gz
+cp ~/PAGeDeliverables/delivery_28_08_2012/collard/data.tar.gz coll.tar.gz
+cp ~/PAGeDeliverables/delivery_28_08_2012/antonio/data.tar.gz anto.tar.gz
+cp ~/PAGeDeliverables/delivery_28_08_2012/everett/data.tar.gz ever.tar.gz
+tar xzvf coll.tar.gz
+tar xzvf ever.tar.gz
+tar xzvf gott.tar.gz
+tar xzvf ant.tar.gz
 
+cd data/
 
-  564  tar xzvf coll.tar.gz
-  567  tar xzvf ever.tar.gz
-  568  tar xzvf gott.tar.gz
-  568  tar xzvf ant.tar.gz
+rename 's/automated_annotation\.embl/\.embl/' *embl
 
-  571  cd data/
-
-  574  rename 's/automated_annotation\.embl/\.embl/' *embl
-
-  576  rename 's/\.\./\./' *embl
+rename 's/\.\./\./' *embl
 
 
 $ PATH=$PATH:/lustre/scratch108/pathogen/fy2/page/analysis_coregenome/pneumoscript
