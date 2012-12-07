@@ -57,7 +57,3 @@ $ mv *#*.gg to_delete/
 
 bsub -o out -e out.err 'orthomcl.pl --mode 3 --blast_file All.versus.All.m8 --gg_file All.gg -m8blast'
 
-get the clusters with at least 40 isolates,
-group by cluster, show the frequency of gene name and its colour in the cluster:
-$ grep "40 taxa" all_orthomcl.out | ortho_stats.pl | sort -k1,1n -k3,3 -k4,4n | groupBy -g 1,3,4 -c 4 -o count | less
-
