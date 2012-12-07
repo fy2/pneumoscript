@@ -55,5 +55,5 @@ $ cat *gg > All.gg
 $ mv *#*.gg to_delete/
 
 
-bsub -o out -e out.err 'orthomcl.pl --mode 3 --blast_file All.versus.All.m8 --gg_file All.gg -m8blast'
+bsub -R "select[type==X86_64 && mem > 3000] rusage[mem=3000]" -M3000000 -o out -e out.err 'orthomcl.pl --mode 3 --blast_file All.versus.All.m8 --gg_file All.gg -m8blast'
 
