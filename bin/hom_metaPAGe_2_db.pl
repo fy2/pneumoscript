@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use vars qw($VERSION);
 
 $VERSION="0.01";

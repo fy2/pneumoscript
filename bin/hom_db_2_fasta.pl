@@ -1,4 +1,7 @@
-# Connect to your database.
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
 use Homolog::Schema;
 
 my $ps = <STDIN>;
