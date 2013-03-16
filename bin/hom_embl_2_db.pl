@@ -4,6 +4,8 @@ use warnings;
 use Homolog::Schema;
 use Bio::SeqIO;
 
+
+
 my $ps = <STDIN>;
 chomp $ps;
 my $SCHEMA = Homolog::Schema->connect('dbi:mysql:pathogen_fy2_test:mcs6:3346', 'fy2', $ps);
@@ -45,30 +47,38 @@ sub insert_features {
 
         for my $feat ($seq->get_SeqFeatures) {
 
+            #get the feature details:
             if ($feat->primary_tag eq "CDS") {
                
-                my (@tags, $product, $translation);
+                my @tags;
+                my $product = my $translation = -1;
                 TAG: 
                 for my $tag ($feat->get_all_tags) {             
                      
                      
                     if ($tag eq 'product')  {
-                        $product = $feat->get_tag_values($tag);
+                        $product = join ',', $feat->get_tag_values($tag);
+                        $feat->remove_tag('product');
                     } 
                     elsif ($tag eq 'translation')   {
                         $translation = $feat->get_tag_values($tag);
-                    }
-                    else {
-                        push @tags, $tag . "\t" . $feat->get_tag_values($tag);
+                        $feat->remove_tag('translation')
                     }
                     
                 }
-              
-            $SCHEMA->resultset('HomFeatures')->create({
+
+            #start inserting the feature
+            #into the DB:
+            my $inserted = $SCHEMA->resultset('HomFeature')->create({
                                                  dna         => $feat->spliced_seq->seq,
-                                                 translation => $translation || '',
-                                                 product     => $product || '',
+                                                 translation => $translation,
+                                                 product     => $product,
+                                                 description => $feat->gff_string, 
+                                                 hom_isolates_id  => $id,
                                                });
+            print 'Inserted: ', $inserted->id, "\n";
+
+
             }
         }
     }

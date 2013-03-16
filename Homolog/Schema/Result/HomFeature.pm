@@ -63,7 +63,7 @@ __PACKAGE__->table("hom_features");
   data_type: 'text'
   is_nullable: 1
 
-=head2 peptide
+=head2 translation
 
   data_type: 'text'
   is_nullable: 1
@@ -88,16 +88,20 @@ __PACKAGE__->table("hom_features");
 
 =head2 description
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 200
 
 =head2 product
 
   data_type: 'varchar'
-  default_value: 'hypothetical protein'
   is_nullable: 1
-  size: 45
+  size: 80
+
+=head2 hom_isolates_id
+
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0
 
 =cut
 
@@ -112,7 +116,7 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 1 },
   "dna",
   { data_type => "text", is_nullable => 1 },
-  "peptide",
+  "translation",
   { data_type => "text", is_nullable => 1 },
   "isolate_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
@@ -121,14 +125,11 @@ __PACKAGE__->add_columns(
   "group_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "description",
-  { data_type => "varchar", is_nullable => 1, size => 200 },
+  { data_type => "text", is_nullable => 1 },
   "product",
-  {
-    data_type => "varchar",
-    default_value => "hypothetical protein",
-    is_nullable => 1,
-    size => 45,
-  },
+  { data_type => "varchar", is_nullable => 1, size => 80 },
+  "hom_isolates_id",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -137,11 +138,13 @@ __PACKAGE__->add_columns(
 
 =item * L</id>
 
+=item * L</hom_isolates_id>
+
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("id");
+__PACKAGE__->set_primary_key("id", "hom_isolates_id");
 
 =head1 RELATIONS
 
@@ -215,6 +218,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 hom_isolates
+
+Type: belongs_to
+
+Related object: L<Homolog::Schema::Result::HomIsolates>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "hom_isolates",
+  "Homolog::Schema::Result::HomIsolates",
+  { id => "hom_isolates_id" },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
 =head2 isolate
 
 Type: belongs_to
@@ -236,8 +254,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-15 22:44:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Bgg1Ewe/7V0dDXyFls2cGA
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-16 18:48:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GNyyxDlAUAXjSTqu2Lbq0A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

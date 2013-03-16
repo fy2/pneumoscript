@@ -136,11 +136,13 @@ CREATE  TABLE IF NOT EXISTS `hom_features` (
   `analysis_id` INT NULL ,
   `group_id` INT NULL ,
   `description` TEXT NULL ,
-  `product` VARCHAR(35) NULL DEFAULT 'hypothetical protein' ,
-  PRIMARY KEY (`id`) ,
+  `product` VARCHAR(80) NULL ,
+  `hom_isolates_id` INT NOT NULL ,
+  PRIMARY KEY (`id`, `hom_isolates_id`) ,
   INDEX `analysis_fkey_idx` (`analysis_id` ASC) ,
   INDEX `isolate_fkey_idx` (`isolate_id` ASC) ,
   INDEX `group_fkey_idx` (`group_id` ASC) ,
+  INDEX `fk_hom_features_hom_isolates1_idx` (`hom_isolates_id` ASC) ,
   CONSTRAINT `isolate_fkey`
     FOREIGN KEY (`isolate_id` )
     REFERENCES `hom_isolates` (`id` )
@@ -154,6 +156,11 @@ CREATE  TABLE IF NOT EXISTS `hom_features` (
   CONSTRAINT `group_fkey`
     FOREIGN KEY (`group_id` )
     REFERENCES `hom_groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_hom_features_hom_isolates1`
+    FOREIGN KEY (`hom_isolates_id` )
+    REFERENCES `hom_isolates` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
