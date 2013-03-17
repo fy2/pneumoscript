@@ -625,24 +625,9 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 hom_features_homs_isolates
 
-Type: has_many
-
-Related object: L<Homolog::Schema::Result::HomFeature>
-
-=cut
-
-__PACKAGE__->has_many(
-  "hom_features_homs_isolates",
-  "Homolog::Schema::Result::HomFeature",
-  { "foreign.hom_isolates_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-16 18:48:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:V4wLQW2UJkArGgemCl/eYQ
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:29:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:647wjmegnjPCnrMzhmy6Tw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

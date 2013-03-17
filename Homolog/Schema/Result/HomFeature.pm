@@ -97,12 +97,6 @@ __PACKAGE__->table("hom_features");
   is_nullable: 1
   size: 80
 
-=head2 hom_isolates_id
-
-  data_type: 'integer'
-  is_foreign_key: 1
-  is_nullable: 0
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -128,8 +122,6 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "product",
   { data_type => "varchar", is_nullable => 1, size => 80 },
-  "hom_isolates_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -138,13 +130,11 @@ __PACKAGE__->add_columns(
 
 =item * L</id>
 
-=item * L</hom_isolates_id>
-
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("id", "hom_isolates_id");
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -213,21 +203,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 hom_isolates
-
-Type: belongs_to
-
-Related object: L<Homolog::Schema::Result::HomIsolates>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "hom_isolates",
-  "Homolog::Schema::Result::HomIsolates",
-  { id => "hom_isolates_id" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
-);
-
 =head2 isolate
 
 Type: belongs_to
@@ -244,8 +219,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:00:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:43l8gjxDWT2E+NXnKdSTeQ
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:29:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Yo2Do9hEbPSVTaNbfu4Cdg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

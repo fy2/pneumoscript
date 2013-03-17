@@ -6,12 +6,13 @@ use Bio::SeqIO;
 use Getopt::Long;
 use Pod::Usage;
 
-my ($opt_help, $opt_man, $opt_password, $opt_trans, $opt_dna);
+my ($opt_help, $opt_man, $opt_password, $opt_trans, $opt_dna, $opt_analysis_id);
 GetOptions(
-  'help|h'         => \$opt_help,
-  'password|p=s'   => \$opt_password,
+  'help|h'          => \$opt_help,
+  'password|p=s'    => \$opt_password,
   'translation|t=s' => \$opt_trans,
   'dna|d=s'         => \$opt_dna,
+  'analysis_id|a=i' => \$opt_analysis_id,
 ) or pod2usage(-verbose => 1) && exit;
 
 pod2usage(-verbose => 1) && exit if defined $opt_help;
@@ -20,6 +21,7 @@ pod2usage(-verbose => 1) && exit unless
                                defined $opt_password
                                and 
                                (defined $opt_trans or defined $opt_dna)
+                               and defined $opt_analysis_id
                            );
 
 
@@ -51,6 +53,7 @@ sub insert_dna {
                                                  dna         => $seq->seq,
                                                  description => $seq->id . $seq->desc, 
                                                  hom_isolates_id  => $isolate_id,
+                                                 analysis_id     => $opt_analysis_id,
                                                });
             print 'Inserted: ', $inserted->id, "\n";       
     }
@@ -69,6 +72,7 @@ sub insert_translation {
                                                  translation      => $seq->seq,
                                                  description      => $seq->id . $seq->desc, 
                                                  hom_isolates_id  => $isolate_id,
+                                                 analysis_id    => $opt_analysis_id,
                                                });
             print 'Inserted: ', $inserted->id, "\n";       
     }    
@@ -92,6 +96,8 @@ sub insert_translation_and_dna {
                                                                 . ' TRANSLATION_FILE_DESC: ' . $opt_trans . ', ' . $seqtrans->id . $seqtrans->desc,
                                                        
                                                  hom_isolates_id  => $isolate_id,
+                                                 analysis_id => $opt_analysis_id,
+                                                 
                                                });
             print 'Inserted: ', $inserted->id, "\n";       
     }
