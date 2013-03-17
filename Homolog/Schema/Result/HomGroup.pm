@@ -51,7 +51,7 @@ __PACKAGE__->table("hom_groups");
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 remarks
 
@@ -67,7 +67,7 @@ __PACKAGE__->add_columns(
   "name",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "analysis_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "remarks",
   { data_type => "varchar", is_nullable => 1, size => 45 },
 );
@@ -98,12 +98,7 @@ __PACKAGE__->belongs_to(
   "analysis",
   "Homolog::Schema::Result::HomAnalysis",
   { id => "analysis_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 hom_features
@@ -122,8 +117,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-15 22:44:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:X7s7E69npivQzLbBuqun/Q
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:00:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rwRpggpWMnwZbAA0RwMtrQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

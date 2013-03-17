@@ -72,13 +72,13 @@ __PACKAGE__->table("hom_features");
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 analysis_id
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 group_id
 
@@ -119,9 +119,9 @@ __PACKAGE__->add_columns(
   "translation",
   { data_type => "text", is_nullable => 1 },
   "isolate_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "analysis_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "group_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "description",
@@ -160,12 +160,7 @@ __PACKAGE__->belongs_to(
   "analysis",
   "Homolog::Schema::Result::HomAnalysis",
   { id => "analysis_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 group
@@ -245,17 +240,12 @@ __PACKAGE__->belongs_to(
   "isolate",
   "Homolog::Schema::Result::HomIsolates",
   { id => "isolate_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-16 18:48:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GNyyxDlAUAXjSTqu2Lbq0A
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:00:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:43l8gjxDWT2E+NXnKdSTeQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
