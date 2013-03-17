@@ -3,16 +3,26 @@ use strict;
 use warnings;
 use Homolog::Schema;
 use Bio::SeqIO;
+use Getopt::Long;
+use Pod::Usage;
 
+my ($opt_help, $opt_man, $opt_password);
+GetOptions(
+  'help|h'         => \$opt_help,
+  'password|p=s'   => \$opt_password,
+) or pod2usage(-verbose => 1) && exit;
 
-
-my $ps = <STDIN>;
-chomp $ps;
-my $SCHEMA = Homolog::Schema->connect('dbi:mysql:pathogen_fy2_test:mcs6:3346', 'fy2', $ps);
-
-
+pod2usage(-verbose => 1) && exit if defined $opt_help;
+pod2usage(-verbose => 1) && exit unless 
+                           (
+                               defined $opt_password
+                           );
 
 my @embl_files = @ARGV;
+
+my $SCHEMA = Homolog::Schema->connect('dbi:mysql:pathogen_fy2_test:mcs6:3346', 'fy2', $opt_password);
+
+
 
 foreach my $embl (@embl_files) {
 
@@ -61,7 +71,7 @@ sub insert_features {
                         $feat->remove_tag('product');
                     } 
                     elsif ($tag eq 'translation')   {
-                        $translation = $feat->get_tag_values($tag);
+                        $translation = join ',', $feat->get_tag_values($tag);
                         $feat->remove_tag('translation')
                     }
                     
@@ -78,8 +88,43 @@ sub insert_features {
                                                });
             print 'Inserted: ', $inserted->id, "\n";
 
-
             }
         }
     }
 }
+
+
+
+
+__END__
+
+=head1 NAME
+
+=head1 SYNOPSIS
+
+B<hom_embl_2_db.pl> -p password  embl1 embl2 ...
+   
+ Options:
+   -help|h        brief help message
+   -dbpassword|p=s' => \$opt_password,
+
+=head1 DESCRIPTION
+
+Insert features from an EMBL file into DB, check if isolate exists in DB by inspecting embl file name's prefix.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exit.
+
+=back
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
