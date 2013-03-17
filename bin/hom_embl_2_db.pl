@@ -6,10 +6,11 @@ use Bio::SeqIO;
 use Getopt::Long;
 use Pod::Usage;
 
-my ($opt_help, $opt_man, $opt_password);
+my ($opt_help, $opt_man, $opt_password, $opt_analysis_id);
 GetOptions(
   'help|h'         => \$opt_help,
   'password|p=s'   => \$opt_password,
+  'analysis_id|a=i'   => \$opt_analysis_id,
 ) or pod2usage(-verbose => 1) && exit;
 
 pod2usage(-verbose => 1) && exit if defined $opt_help;
@@ -84,7 +85,8 @@ sub insert_features {
                                                  translation => $translation,
                                                  product     => $product,
                                                  description => $feat->gff_string, 
-                                                 hom_isolates_id  => $id,
+                                                 isolate_id  => $id,
+                                                 analysis_id => $opt_analysis_id,
                                                });
             print 'Inserted: ', $inserted->id, "\n";
 
@@ -106,7 +108,8 @@ B<hom_embl_2_db.pl> -p password  embl1 embl2 ...
    
  Options:
    -help|h        brief help message
-   -dbpassword|p=s' => \$opt_password,
+   -dbpassword|p=s
+   -analysis_id|a=i
 
 =head1 DESCRIPTION
 

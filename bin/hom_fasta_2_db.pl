@@ -52,7 +52,7 @@ sub insert_dna {
             my $inserted = $SCHEMA->resultset('HomFeature')->create({
                                                  dna         => $seq->seq,
                                                  description => $seq->id . $seq->desc, 
-                                                 hom_isolates_id  => $isolate_id,
+                                                 isolate_id  => $isolate_id,
                                                  analysis_id     => $opt_analysis_id,
                                                });
             print 'Inserted: ', $inserted->id, "\n";       
@@ -71,7 +71,7 @@ sub insert_translation {
             my $inserted = $SCHEMA->resultset('HomFeature')->create({
                                                  translation      => $seq->seq,
                                                  description      => $seq->id . $seq->desc, 
-                                                 hom_isolates_id  => $isolate_id,
+                                                 isolate_id  => $isolate_id,
                                                  analysis_id    => $opt_analysis_id,
                                                });
             print 'Inserted: ', $inserted->id, "\n";       
@@ -95,7 +95,7 @@ sub insert_translation_and_dna {
                                                  description =>   'DNA_FILE_DESC: '         . $opt_dna   . ', ' . $seqdna->id . $seqdna->desc 
                                                                 . ' TRANSLATION_FILE_DESC: ' . $opt_trans . ', ' . $seqtrans->id . $seqtrans->desc,
                                                        
-                                                 hom_isolates_id  => $isolate_id,
+                                                 isolate_id  => $isolate_id,
                                                  analysis_id => $opt_analysis_id,
                                                  
                                                });
@@ -201,6 +201,7 @@ B<hom_fasta_2_db.pl> -p password  -translation -dna ...
    -dbpassword|p=s' => \$opt_password,
    -translation|t=s' => \$opt_trans, FASTA format
    -dna|d=s'         => \$opt_dna  FASTA format
+   -analysis_id|a=i' => \$opt_analysis_id,
 
 =head1 DESCRIPTION
 
