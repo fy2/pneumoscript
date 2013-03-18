@@ -90,7 +90,8 @@ sub isolate_features_to_fasta {
             my $seq = Bio::PrimarySeq->new( -seq => $feature->dna, 
                                             -id  => $feature->id 
                                           );
-            $io->write_seq($seq);   
+            $io->write_seq($seq);
+            print "Done ", $feature->id, "\n";  
         }
     }      
 }

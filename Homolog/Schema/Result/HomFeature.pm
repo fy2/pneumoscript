@@ -83,7 +83,6 @@ __PACKAGE__->table("hom_features");
 =head2 group_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 1
 
 =head2 description
@@ -117,7 +116,7 @@ __PACKAGE__->add_columns(
   "analysis_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "group_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_nullable => 1 },
   "description",
   { data_type => "text", is_nullable => 1 },
   "product",
@@ -153,26 +152,6 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 group
-
-Type: belongs_to
-
-Related object: L<Homolog::Schema::Result::HomGroup>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "group",
-  "Homolog::Schema::Result::HomGroup",
-  { id => "group_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
-);
-
 =head2 hom_comparisons_feature_bs
 
 Type: has_many
@@ -203,6 +182,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 hom_group_compsitions
+
+Type: has_many
+
+Related object: L<Homolog::Schema::Result::HomGroupCompsition>
+
+=cut
+
+__PACKAGE__->has_many(
+  "hom_group_compsitions",
+  "Homolog::Schema::Result::HomGroupCompsition",
+  { "foreign.feature_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 isolate
 
 Type: belongs_to
@@ -219,8 +213,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:29:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Yo2Do9hEbPSVTaNbfu4Cdg
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-18 17:40:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:um6zVpQzVR5FJHxEmcFf4g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
