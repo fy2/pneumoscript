@@ -101,26 +101,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hom_groups`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `hom_groups` ;
-
-CREATE  TABLE IF NOT EXISTS `hom_groups` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NULL ,
-  `analysis_id` INT NOT NULL ,
-  `remarks` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `analysis_id_fkey_idx` (`analysis_id` ASC) ,
-  CONSTRAINT `analysis_id_fkey`
-    FOREIGN KEY (`analysis_id` )
-    REFERENCES `hom_analysis` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `hom_features`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `hom_features` ;
@@ -134,13 +114,11 @@ CREATE  TABLE IF NOT EXISTS `hom_features` (
   `translation` TEXT NULL ,
   `isolate_id` INT NOT NULL ,
   `analysis_id` INT NOT NULL ,
-  `group_id` INT NULL ,
   `description` TEXT NULL ,
   `product` VARCHAR(80) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `analysis_fkey_idx` (`analysis_id` ASC) ,
   INDEX `isolate_fkey_idx` (`isolate_id` ASC) ,
-  INDEX `group_fkey_idx` (`group_id` ASC) ,
   CONSTRAINT `isolate_fkey`
     FOREIGN KEY (`isolate_id` )
     REFERENCES `hom_isolates` (`id` )
@@ -149,11 +127,6 @@ CREATE  TABLE IF NOT EXISTS `hom_features` (
   CONSTRAINT `analysis_fkey`
     FOREIGN KEY (`analysis_id` )
     REFERENCES `hom_analysis` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `group_fkey`
-    FOREIGN KEY (`group_id` )
-    REFERENCES `hom_groups` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -183,6 +156,49 @@ CREATE  TABLE IF NOT EXISTS `hom_comparisons` (
     ON UPDATE NO ACTION,
   CONSTRAINT `feature_b_fkey`
     FOREIGN KEY (`feature_b_id` )
+    REFERENCES `hom_features` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hom_groups`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `hom_groups` ;
+
+CREATE  TABLE IF NOT EXISTS `hom_groups` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NULL ,
+  `analysis_id` INT NOT NULL ,
+  `remarks` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `analysis_id_fkey_idx` (`analysis_id` ASC) ,
+  CONSTRAINT `analysis_id_fkey`
+    FOREIGN KEY (`analysis_id` )
+    REFERENCES `hom_analysis` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hom_group_compsitions`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `hom_group_compsitions` ;
+
+CREATE  TABLE IF NOT EXISTS `hom_group_compsitions` (
+  `feature_id` INT NULL ,
+  `group_id` INT NULL ,
+  INDEX `group_fkey_idx` (`group_id` ASC) ,
+  INDEX `feature_fkey_idx` (`feature_id` ASC) ,
+  CONSTRAINT `group_fkey`
+    FOREIGN KEY (`group_id` )
+    REFERENCES `hom_groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `feature_fkey`
+    FOREIGN KEY (`feature_id` )
     REFERENCES `hom_features` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
