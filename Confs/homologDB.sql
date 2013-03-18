@@ -133,36 +133,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hom_comparisons`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `hom_comparisons` ;
-
-CREATE  TABLE IF NOT EXISTS `hom_comparisons` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `feature_a_id` INT NULL ,
-  `feature_b_id` INT NULL ,
-  `perc_identity` FLOAT NULL ,
-  `evalue` FLOAT NULL ,
-  `ortho_score_normalised` FLOAT NULL ,
-  `ortho_score_raw` FLOAT NULL ,
-  `relation` ENUM('ortholog', 'paralog', 'co_ortholog', 'unknown') NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `feature_a_fkey_idx` (`feature_a_id` ASC) ,
-  INDEX `feature_b_fkey_idx` (`feature_b_id` ASC) ,
-  CONSTRAINT `feature_a_fkey`
-    FOREIGN KEY (`feature_a_id` )
-    REFERENCES `hom_features` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `feature_b_fkey`
-    FOREIGN KEY (`feature_b_id` )
-    REFERENCES `hom_features` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `hom_groups`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `hom_groups` ;
@@ -183,11 +153,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hom_group_compsitions`
+-- Table `hom_group_compositions`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `hom_group_compsitions` ;
+DROP TABLE IF EXISTS `hom_group_compositions` ;
 
-CREATE  TABLE IF NOT EXISTS `hom_group_compsitions` (
+CREATE  TABLE IF NOT EXISTS `hom_group_compositions` (
   `feature_id` INT NULL ,
   `group_id` INT NULL ,
   INDEX `group_fkey_idx` (`group_id` ASC) ,
