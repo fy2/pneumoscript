@@ -301,159 +301,185 @@ surveillance? hospital?
 
 =head2 sa_st
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_penz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_eryz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_cliz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_tetz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_chlz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_rifz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_optz
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_penmic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_amomic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_furmic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_cromic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_taxmic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_mermic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_vanmic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_erymic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_telmic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_climic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_tetmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_cotmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_chlmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_cipmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_levmic
 
-  data_type: 'float'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_rifmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_linmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =head2 sa_synmic
 
-  data_type: 'integer'
+  data_type: 'varchar'
   default_value: -1
   is_nullable: 1
+  size: 5
 
 =cut
 
@@ -543,57 +569,57 @@ __PACKAGE__->add_columns(
   "culture_received",
   { data_type => "varchar", is_nullable => 1, size => 25 },
   "sa_st",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_penz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_eryz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_cliz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_tetz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_chlz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_rifz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_optz",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_penmic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_amomic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_furmic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_cromic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_taxmic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_mermic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_vanmic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_erymic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_telmic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_climic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_tetmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_cotmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_chlmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_cipmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_levmic",
-  { data_type => "float", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_rifmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_linmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
   "sa_synmic",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
 );
 
 =head1 PRIMARY KEY
@@ -626,8 +652,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-17 11:29:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:647wjmegnjPCnrMzhmy6Tw
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 14:40:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jCk73rCgu1qPXoO8Td86uw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

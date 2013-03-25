@@ -41,33 +41,6 @@ __PACKAGE__->table("hom_features");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 start
-
-  data_type: 'integer'
-  extra: {unsigned => 1}
-  is_nullable: 1
-
-=head2 end
-
-  data_type: 'integer'
-  extra: {unsigned => 1}
-  is_nullable: 1
-
-=head2 strand
-
-  data_type: 'integer'
-  is_nullable: 1
-
-=head2 dna
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 translation
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 isolate_id
 
   data_type: 'integer'
@@ -80,16 +53,6 @@ __PACKAGE__->table("hom_features");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 group_id
-
-  data_type: 'integer'
-  is_nullable: 1
-
-=head2 description
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 product
 
   data_type: 'varchar'
@@ -101,24 +64,10 @@ __PACKAGE__->table("hom_features");
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "start",
-  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 1 },
-  "end",
-  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 1 },
-  "strand",
-  { data_type => "integer", is_nullable => 1 },
-  "dna",
-  { data_type => "text", is_nullable => 1 },
-  "translation",
-  { data_type => "text", is_nullable => 1 },
   "isolate_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "analysis_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "group_id",
-  { data_type => "integer", is_nullable => 1 },
-  "description",
-  { data_type => "text", is_nullable => 1 },
   "product",
   { data_type => "varchar", is_nullable => 1, size => 80 },
 );
@@ -152,6 +101,21 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
+=head2 hom_feature_contents
+
+Type: has_many
+
+Related object: L<Homolog::Schema::Result::HomFeatureContent>
+
+=cut
+
+__PACKAGE__->has_many(
+  "hom_feature_contents",
+  "Homolog::Schema::Result::HomFeatureContent",
+  { "foreign.feature_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 hom_group_compositions
 
 Type: has_many
@@ -183,8 +147,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-18 17:51:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pNKQ0XHE/SlmOfnq+BVZ4Q
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 14:40:32
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ubcpcQRUtfw/lFr7VfET7g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

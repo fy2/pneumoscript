@@ -11,7 +11,7 @@ USE `pathogen_fy2_test` ;
 DROP TABLE IF EXISTS `hom_isolates` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_isolates` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
+  `id` INT(4) NOT NULL AUTO_INCREMENT ,
   `remarks` VARCHAR(200) NULL COMMENT 'isolates involved in a particular experiment' ,
   `sanger_id` VARCHAR(45) NULL ,
   `sanger_study_id` VARCHAR(45) NULL ,
@@ -53,32 +53,32 @@ CREATE  TABLE IF NOT EXISTS `hom_isolates` (
   `country` VARCHAR(45) NULL ,
   `date_received` VARCHAR(25) NULL ,
   `culture_received` VARCHAR(25) NULL ,
-  `sa_st` INT NULL DEFAULT -1 ,
-  `sa_penz` INT NULL DEFAULT -1 ,
-  `sa_eryz` INT NULL DEFAULT -1 ,
-  `sa_cliz` INT NULL DEFAULT -1 ,
-  `sa_tetz` INT NULL DEFAULT -1 ,
-  `sa_chlz` INT NULL DEFAULT -1 ,
-  `sa_rifz` INT NULL DEFAULT -1 ,
-  `sa_optz` INT NULL DEFAULT -1 ,
-  `sa_penmic` FLOAT NULL DEFAULT -1 ,
-  `sa_amomic` FLOAT NULL DEFAULT -1 ,
-  `sa_furmic` FLOAT NULL DEFAULT -1 ,
-  `sa_cromic` FLOAT NULL DEFAULT -1 ,
-  `sa_taxmic` FLOAT NULL DEFAULT -1 ,
-  `sa_mermic` FLOAT NULL DEFAULT -1 ,
-  `sa_vanmic` FLOAT NULL DEFAULT -1 ,
-  `sa_erymic` FLOAT NULL DEFAULT -1 ,
-  `sa_telmic` FLOAT NULL DEFAULT -1 ,
-  `sa_climic` FLOAT NULL DEFAULT -1 ,
-  `sa_tetmic` INT NULL DEFAULT -1 ,
-  `sa_cotmic` INT NULL DEFAULT -1 ,
-  `sa_chlmic` INT NULL DEFAULT -1 ,
-  `sa_cipmic` INT NULL DEFAULT -1 ,
-  `sa_levmic` FLOAT NULL DEFAULT -1 ,
-  `sa_rifmic` INT NULL DEFAULT -1 ,
-  `sa_linmic` INT NULL DEFAULT -1 ,
-  `sa_synmic` INT NULL DEFAULT -1 ,
+  `sa_st` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_penz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_eryz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_cliz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_tetz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_chlz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_rifz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_optz` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_penmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_amomic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_furmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_cromic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_taxmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_mermic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_vanmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_erymic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_telmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_climic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_tetmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_cotmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_chlmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_cipmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_levmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_rifmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_linmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `sa_synmic` VARCHAR(5) NULL DEFAULT -1 ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -89,7 +89,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `hom_analysis` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_analysis` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
+  `id` INT(4) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NULL ,
   `date` DATETIME NULL COMMENT 'a single orthology with orthomcl analysis will constitute an experiment' ,
   `user` VARCHAR(45) NULL ,
@@ -106,15 +106,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `hom_features` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_features` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `start` INT UNSIGNED NULL ,
-  `end` INT UNSIGNED NULL ,
-  `strand` INT NULL ,
-  `dna` TEXT NULL ,
-  `translation` TEXT NULL ,
-  `isolate_id` INT NOT NULL ,
-  `analysis_id` INT NOT NULL ,
-  `description` TEXT NULL ,
+  `id` INT(7) NOT NULL AUTO_INCREMENT ,
+  `isolate_id` INT(4) NOT NULL ,
+  `analysis_id` INT(3) NOT NULL ,
   `product` VARCHAR(80) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `analysis_fkey_idx` (`analysis_id` ASC) ,
@@ -138,10 +132,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `hom_groups` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_groups` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
+  `id` INT(5) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NULL ,
-  `analysis_id` INT NOT NULL ,
-  `remarks` VARCHAR(45) NULL ,
+  `analysis_id` INT(4) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `analysis_id_fkey_idx` (`analysis_id` ASC) ,
   CONSTRAINT `analysis_id_fkey`
@@ -158,8 +151,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `hom_group_compositions` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_group_compositions` (
-  `feature_id` INT NULL ,
-  `group_id` INT NULL ,
+  `feature_id` INT(7) NOT NULL ,
+  `group_id` INT(5) NOT NULL ,
   INDEX `group_fkey_idx` (`group_id` ASC) ,
   INDEX `feature_fkey_idx` (`feature_id` ASC) ,
   CONSTRAINT `group_fkey`
@@ -168,6 +161,27 @@ CREATE  TABLE IF NOT EXISTS `hom_group_compositions` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `feature_fkey`
+    FOREIGN KEY (`feature_id` )
+    REFERENCES `hom_features` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hom_feature_contents`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `hom_feature_contents` ;
+
+CREATE  TABLE IF NOT EXISTS `hom_feature_contents` (
+  `dna` TEXT NULL ,
+  `translation` TEXT NULL ,
+  `feature_gff` TEXT NULL ,
+  `feature_id` INT(7) NULL ,
+  `strand` INT(1) NULL ,
+  `description` TEXT NULL ,
+  INDEX `feature_content_fkey` (`feature_id` ASC) ,
+  CONSTRAINT `feature_content_fkey`
     FOREIGN KEY (`feature_id` )
     REFERENCES `hom_features` (`id` )
     ON DELETE NO ACTION
