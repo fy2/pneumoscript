@@ -39,21 +39,21 @@ __PACKAGE__->table("hom_group_compositions");
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 group_id
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
   "feature_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "group_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
 
 =head1 RELATIONS
@@ -70,12 +70,7 @@ __PACKAGE__->belongs_to(
   "feature",
   "Homolog::Schema::Result::HomFeature",
   { id => "feature_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 group
@@ -90,17 +85,12 @@ __PACKAGE__->belongs_to(
   "group",
   "Homolog::Schema::Result::HomGroup",
   { id => "group_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-18 17:51:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:erJ3/l3VEdpbbR0/g3DlfA
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-18 18:17:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pUN9BKbNt3MawACpYztB8A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
