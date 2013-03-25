@@ -41,27 +41,27 @@ __PACKAGE__->table("hom_groups");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 name
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 45
-
 =head2 analysis_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 remarks
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 45
+
 =cut
 
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "name",
-  { data_type => "varchar", is_nullable => 1, size => 45 },
   "analysis_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "remarks",
+  { data_type => "varchar", is_nullable => 1, size => 45 },
 );
 
 =head1 PRIMARY KEY
@@ -109,8 +109,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 14:40:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DnHHJnW9uTs3X/PD3A+ecA
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 15:05:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IFh51CUnAK3+yOPklj7Crw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -11,7 +11,7 @@ USE `pathogen_fy2_test` ;
 DROP TABLE IF EXISTS `hom_isolates` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_isolates` (
-  `id` INT(4) NOT NULL AUTO_INCREMENT ,
+  `id` INT(5) NOT NULL AUTO_INCREMENT ,
   `remarks` VARCHAR(200) NULL COMMENT 'isolates involved in a particular experiment' ,
   `sanger_id` VARCHAR(45) NULL ,
   `sanger_study_id` VARCHAR(45) NULL ,
@@ -23,15 +23,15 @@ CREATE  TABLE IF NOT EXISTS `hom_isolates` (
   `strain_id` VARCHAR(45) NULL ,
   `strain_id_sanger` VARCHAR(45) NULL ,
   `top_serotype` VARCHAR(45) NULL ,
-  `top_serotype_perc` VARCHAR(25) NULL DEFAULT -1 COMMENT 'for some reason, float and text is mixed in this column' ,
+  `top_serotype_perc` VARCHAR(25) NULL COMMENT 'for some reason, float and text is mixed in this column' ,
   `second_serotype` VARCHAR(45) NULL ,
-  `second_serotype_perc` VARCHAR(25) NULL DEFAULT -1 COMMENT 'for some reason, float and text is mixed in this column' ,
+  `second_serotype_perc` VARCHAR(25) NULL COMMENT 'for some reason, float and text is mixed in this column' ,
   `mlst` VARCHAR(45) NULL ,
   `analysis_status` VARCHAR(45) NULL ,
   `analysis_comment` VARCHAR(45) NULL ,
-  `gender` VARCHAR(45) NULL ,
-  `age_in_years` INT NULL DEFAULT -1 ,
-  `age_in_months` INT NULL DEFAULT -1 ,
+  `gender` VARCHAR(45) NULL COMMENT 'most of the columns are text/varchar as the import excel sheet was not filled in consistently with one type.' ,
+  `age_in_years` TEXT NULL ,
+  `age_in_months` TEXT NULL ,
   `body_source` VARCHAR(45) NULL ,
   `meningitis_outbreak_isolate` VARCHAR(45) NULL ,
   `hiv` VARCHAR(45) NULL ,
@@ -45,40 +45,40 @@ CREATE  TABLE IF NOT EXISTS `hom_isolates` (
   `longitude` FLOAT NULL DEFAULT -1 ,
   `location_country` VARCHAR(45) NULL ,
   `location_city` VARCHAR(45) NULL ,
-  `cd4_count` INT NULL DEFAULT -1 ,
-  `age_category` VARCHAR(45) NULL ,
-  `no` INT NULL DEFAULT -1 ,
-  `lab_no` INT NULL DEFAULT -1 ,
-  `country_st` VARCHAR(45) NULL ,
-  `country` VARCHAR(45) NULL ,
-  `date_received` VARCHAR(25) NULL ,
-  `culture_received` VARCHAR(25) NULL ,
-  `sa_st` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_penz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_eryz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_cliz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_tetz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_chlz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_rifz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_optz` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_penmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_amomic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_furmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_cromic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_taxmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_mermic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_vanmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_erymic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_telmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_climic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_tetmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_cotmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_chlmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_cipmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_levmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_rifmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_linmic` VARCHAR(5) NULL DEFAULT -1 ,
-  `sa_synmic` VARCHAR(5) NULL DEFAULT -1 ,
+  `cd4_count` TEXT NULL ,
+  `age_category` TEXT NULL ,
+  `no` TEXT NULL ,
+  `lab_no` TEXT NULL ,
+  `country_st` TEXT NULL ,
+  `country` TEXT NULL ,
+  `date_received` TEXT NULL ,
+  `culture_received` TEXT NULL ,
+  `sa_st` TEXT NULL ,
+  `sa_penz` TEXT NULL ,
+  `sa_eryz` TEXT NULL ,
+  `sa_cliz` TEXT NULL ,
+  `sa_tetz` TEXT NULL ,
+  `sa_chlz` TEXT NULL ,
+  `sa_rifz` TEXT NULL ,
+  `sa_optz` TEXT NULL ,
+  `sa_penmic` TEXT NULL ,
+  `sa_amomic` TEXT NULL ,
+  `sa_furmic` TEXT NULL ,
+  `sa_cromic` TEXT NULL ,
+  `sa_taxmic` TEXT NULL ,
+  `sa_mermic` TEXT NULL ,
+  `sa_vanmic` TEXT NULL ,
+  `sa_erymic` TEXT NULL ,
+  `sa_telmic` TEXT NULL ,
+  `sa_climic` TEXT NULL ,
+  `sa_tetmic` TEXT NULL ,
+  `sa_cotmic` TEXT NULL ,
+  `sa_chlmic` TEXT NULL ,
+  `sa_cipmic` TEXT NULL ,
+  `sa_levmic` TEXT NULL ,
+  `sa_rifmic` TEXT NULL ,
+  `sa_linmic` TEXT NULL ,
+  `sa_synmic` TEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -89,7 +89,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `hom_analysis` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_analysis` (
-  `id` INT(4) NOT NULL AUTO_INCREMENT ,
+  `id` INT(3) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NULL ,
   `date` DATETIME NULL COMMENT 'a single orthology with orthomcl analysis will constitute an experiment' ,
   `user` VARCHAR(45) NULL ,
@@ -106,8 +106,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `hom_features` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_features` (
-  `id` INT(7) NOT NULL AUTO_INCREMENT ,
-  `isolate_id` INT(4) NOT NULL ,
+  `id` INT(7) NOT NULL AUTO_INCREMENT COMMENT 'most the \'heavy\' columns to home_feature_contents table as this table can grow very large and querying could be slowed down by bigger columns.' ,
+  `isolate_id` INT(5) NOT NULL ,
   `analysis_id` INT(3) NOT NULL ,
   `product` VARCHAR(80) NULL ,
   PRIMARY KEY (`id`) ,
@@ -133,8 +133,8 @@ DROP TABLE IF EXISTS `hom_groups` ;
 
 CREATE  TABLE IF NOT EXISTS `hom_groups` (
   `id` INT(5) NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NULL ,
-  `analysis_id` INT(4) NOT NULL ,
+  `analysis_id` INT(3) NOT NULL ,
+  `remarks` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `analysis_id_fkey_idx` (`analysis_id` ASC) ,
   CONSTRAINT `analysis_id_fkey`
@@ -169,19 +169,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hom_feature_contents`
+-- Table `home_feature_contents`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `hom_feature_contents` ;
+DROP TABLE IF EXISTS `home_feature_contents` ;
 
-CREATE  TABLE IF NOT EXISTS `hom_feature_contents` (
+CREATE  TABLE IF NOT EXISTS `home_feature_contents` (
+  `feature_id` INT(7) NOT NULL ,
   `dna` TEXT NULL ,
   `translation` TEXT NULL ,
-  `feature_gff` TEXT NULL ,
-  `feature_id` INT(7) NULL ,
-  `strand` INT(1) NULL ,
   `description` TEXT NULL ,
-  INDEX `feature_content_fkey` (`feature_id` ASC) ,
-  CONSTRAINT `feature_content_fkey`
+  PRIMARY KEY (`feature_id`) ,
+  CONSTRAINT `feature_to_contents`
     FOREIGN KEY (`feature_id` )
     REFERENCES `hom_features` (`id` )
     ON DELETE NO ACTION

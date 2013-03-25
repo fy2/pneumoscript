@@ -41,6 +41,8 @@ __PACKAGE__->table("hom_features");
   is_auto_increment: 1
   is_nullable: 0
 
+most the 'heavy' columns to home_feature_contents table as this table can grow very large and querying could be slowed down by bigger columns.
+
 =head2 isolate_id
 
   data_type: 'integer'
@@ -131,6 +133,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 home_feature_content
+
+Type: might_have
+
+Related object: L<Homolog::Schema::Result::HomeFeatureContent>
+
+=cut
+
+__PACKAGE__->might_have(
+  "home_feature_content",
+  "Homolog::Schema::Result::HomeFeatureContent",
+  { "foreign.feature_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 isolate
 
 Type: belongs_to
@@ -147,8 +164,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 14:40:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ubcpcQRUtfw/lFr7VfET7g
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 15:05:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hEI8pWbTwlFABEpxX5S5tg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

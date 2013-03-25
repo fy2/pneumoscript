@@ -112,7 +112,6 @@ isolates involved in a particular experiment
 =head2 top_serotype_perc
 
   data_type: 'varchar'
-  default_value: -1
   is_nullable: 1
   size: 25
 
@@ -127,7 +126,6 @@ for some reason, float and text is mixed in this column
 =head2 second_serotype_perc
 
   data_type: 'varchar'
-  default_value: -1
   is_nullable: 1
   size: 25
 
@@ -157,16 +155,16 @@ for some reason, float and text is mixed in this column
   is_nullable: 1
   size: 45
 
+most of the columns are text/varchar as the import excel sheet was not filled in consistently with one type.
+
 =head2 age_in_years
 
-  data_type: 'integer'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
 
 =head2 age_in_months
 
-  data_type: 'integer'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
 
 =head2 body_source
@@ -253,233 +251,173 @@ surveillance? hospital?
 
 =head2 cd4_count
 
-  data_type: 'integer'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
 
 =head2 age_category
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 45
 
 =head2 no
 
-  data_type: 'integer'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
 
 =head2 lab_no
 
-  data_type: 'integer'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
 
 =head2 country_st
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 45
 
 =head2 country
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 45
 
 =head2 date_received
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 25
 
 =head2 culture_received
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 25
 
 =head2 sa_st
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_penz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_eryz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_cliz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_tetz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_chlz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_rifz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_optz
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_penmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_amomic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_furmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_cromic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_taxmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_mermic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_vanmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_erymic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_telmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_climic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_tetmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_cotmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_chlmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_cipmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_levmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_rifmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_linmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =head2 sa_synmic
 
-  data_type: 'varchar'
-  default_value: -1
+  data_type: 'text'
   is_nullable: 1
-  size: 5
 
 =cut
 
@@ -509,11 +447,11 @@ __PACKAGE__->add_columns(
   "top_serotype",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "top_serotype_perc",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 25 },
+  { data_type => "varchar", is_nullable => 1, size => 25 },
   "second_serotype",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "second_serotype_perc",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 25 },
+  { data_type => "varchar", is_nullable => 1, size => 25 },
   "mlst",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "analysis_status",
@@ -523,9 +461,9 @@ __PACKAGE__->add_columns(
   "gender",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "age_in_years",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "age_in_months",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "body_source",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "meningitis_outbreak_isolate",
@@ -553,73 +491,73 @@ __PACKAGE__->add_columns(
   "location_city",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "cd4_count",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "age_category",
-  { data_type => "varchar", is_nullable => 1, size => 45 },
+  { data_type => "text", is_nullable => 1 },
   "no",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "lab_no",
-  { data_type => "integer", default_value => -1, is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "country_st",
-  { data_type => "varchar", is_nullable => 1, size => 45 },
+  { data_type => "text", is_nullable => 1 },
   "country",
-  { data_type => "varchar", is_nullable => 1, size => 45 },
+  { data_type => "text", is_nullable => 1 },
   "date_received",
-  { data_type => "varchar", is_nullable => 1, size => 25 },
+  { data_type => "text", is_nullable => 1 },
   "culture_received",
-  { data_type => "varchar", is_nullable => 1, size => 25 },
+  { data_type => "text", is_nullable => 1 },
   "sa_st",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_penz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_eryz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_cliz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_tetz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_chlz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_rifz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_optz",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_penmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_amomic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_furmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_cromic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_taxmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_mermic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_vanmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_erymic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_telmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_climic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_tetmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_cotmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_chlmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_cipmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_levmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_rifmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_linmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
   "sa_synmic",
-  { data_type => "varchar", default_value => -1, is_nullable => 1, size => 5 },
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -652,8 +590,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 14:40:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jCk73rCgu1qPXoO8Td86uw
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-03-25 15:05:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cpYz5jCowdS1HRAbynr+GA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
