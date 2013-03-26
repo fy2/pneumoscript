@@ -24,6 +24,7 @@ my @embl_files = @ARGV;
 my $SCHEMA = Homolog::Schema->connect('dbi:mysql:pathogen_fy2_test:mcs6:3346', 'fy2', $opt_password);
 
 
+my @errors;
 
 foreach my $embl (@embl_files) {
 
@@ -37,7 +38,8 @@ foreach my $embl (@embl_files) {
         $isolate_id = $SCHEMA->resultset('HomIsolates')->search({ sanger_id => $name })->first->id;
     }; 
     if ($@) {
-        die "Looks like isolate with name $name is not in our DB, dying!";
+        push @errors, "The isolate with name $name is not in our DB, skipping it!";
+        next;
     }
     else {
         #inserts embl features into the database
@@ -45,6 +47,7 @@ foreach my $embl (@embl_files) {
     }
 }
 
+warn "There were these errors:\n", join("\n", @errors) if (@errors);
 
 #inserts embl features into the hom_features table
 
@@ -80,15 +83,18 @@ sub insert_features {
 
             #start inserting the feature
             #into the DB:
-            my $inserted = $SCHEMA->resultset('HomFeature')->create({
-                                                 dna         => $feat->spliced_seq->seq,
-                                                 translation => $translation,
+            my $inserted_feature = $SCHEMA->resultset('HomFeature')->create({
                                                  product     => $product,
-                                                 description => $feat->gff_string, 
                                                  isolate_id  => $id,
                                                  analysis_id => $opt_analysis_id,
                                                });
-            print 'Inserted: ', $inserted->id, "\n";
+            $SCHEMA->resultset('HomFeatureContent')->create( {
+                                                     dna         => $feat->spliced_seq->seq,
+                                                     translation => $translation,
+                                                     description => $feat->gff_string,
+                                                     feature_id  => $inserted_feature->id,
+                                                   });
+            print 'Inserted: ', $inserted_feature->id, "\n";
 
             }
         }

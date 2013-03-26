@@ -83,12 +83,12 @@ sub isolate_features_to_fasta {
         
         my $io = Bio::SeqIO->new(-file => '>' . $isolate_id . '.fasta', -format => 'fasta');
         
-        my $feature_rs = get_feature_rs_by_isolate_id($isolate_id, $opt_ANALYSIS_ID);
+        my $feature_content_rs = get_feature_content_rs_by_isolate_id($isolate_id, $opt_ANALYSIS_ID);
         
-        while(my $feature = $feature_rs->next ) {
+        while(my $feature = $feature_content_rs->next ) {
                 
             my $seq = Bio::PrimarySeq->new( -seq => $feature->dna, 
-                                            -id  => $feature->id 
+                                            -id  => $feature->feature_id 
                                           );
             $io->write_seq($seq);
             print "Done ", $feature->id, "\n";  
@@ -96,12 +96,12 @@ sub isolate_features_to_fasta {
     }      
 }
 
-#get feature result set by isolate id
-sub get_feature_rs_by_isolate_id {
+#get hom_feature_contents result set by isolate id
+sub get_feature_content_rs_by_isolate_id {
     my ($isolate_id, $analysis_id ) = @_;
     
     my $rs = $SCHEMA->resultset('HomFeature')
-    ->search({ isolate_id => $isolate_id }, { $analysis_id => $analysis_id } );
+    ->search({ isolate_id => $isolate_id }, { $analysis_id => $analysis_id } )->search_related('hom_feature_contents');
     
     return $rs;
     
