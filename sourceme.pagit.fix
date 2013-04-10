@@ -2,7 +2,7 @@
 path=/nfs/pathogen003/tdo/Tools/PAGIT/64bit/PAGIT
 PAGIT_HOME=$path
 
-PATH=$path/bin/:$path/bin/pileup_v0.5/:$path/bin/pileup_v0.5/ssaha2:$path/bin/pileup_v0.5/:$path/IMAGE/:$path/ABACAS:$path/ICORN/:$PATH
+PATH=$path/bin/:$path/bin/pileup_v0.5/:$path/bin/pileup_v0.5/ssaha2:$path/bin/pileup_v0.5/:$path/IMAGE/:$path/ABACAS:$path/ICORN/:$PATH:/lustre/scratch108/pathogen/fy2/page/analysis_assembly/script/
 
 
 ### ABACAS and IMAGE just need a path to there position
