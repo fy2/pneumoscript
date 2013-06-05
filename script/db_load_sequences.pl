@@ -4,7 +4,6 @@ use warnings;
 use lib '..';
 use Getopt::Long;
 use Pod::Usage;
-use DBI;
 use Bio::SeqIO;
 use Genome::Schema;
 
@@ -20,7 +19,7 @@ pod2usage(-verbose => 1) && exit unless (@ARGV > 1);
 
 my $DB = shift @ARGV;
 my $dsn = "DBI:SQLite:$DB";
-my $SCHEMA = Genome::Schema->connect("dbi:SQLite:$DB");
+my $SCHEMA = Genome::Schema->connect("dbi:SQLite:$DB", { AutoCommit => 0 },);
 
 my %ALLprot;
 my %ALLnucl;
@@ -45,7 +44,9 @@ sub db_insert {
     my %cur_prot;
     my %cur_prot_annot;
     my %cur_nucl;
-    
+   
+    $SCHEMA->txn_begin;
+
     #protein seqs
     my $io = Bio::SeqIO->new(-file => $faa, -format=> 'fasta');
     while(my $seq = $io->next_seq) {
@@ -101,12 +102,14 @@ sub db_insert {
                         proteins_id => $prot_id,
                         features_id => $feature_rs->id });
        
-       if (not $feature_rs->id % 100) {
+       if (not $feature_rs->id % 1000) {
            print   "Feature_seq:", $feature_rs->id
                  , ". Unique_proteins:", scalar keys %ALLprot,
                  , ". Unique_dna:", scalar keys %ALLnucl, "\n";
        }
     }
+
+    $SCHEMA->txn_commit;
 }
 
 sub get_isolate_id_by_name {
