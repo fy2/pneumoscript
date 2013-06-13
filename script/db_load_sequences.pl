@@ -68,11 +68,7 @@ sub db_insert {
     }
 
     foreach my $id (keys %cur_prot) {
-        my $feature_rs = $SCHEMA
-                            ->resultset('Feature')->create({
-                            product     => $cur_prot_annot{$id},
-                            isolate_id  => $isolate_id,});
-        
+       
         my ($dna_id, $prot_id);
         #have we seen this protein sequence before?
         #if yes, what is the DB id of it?
@@ -97,13 +93,17 @@ sub db_insert {
             $ALLnucl{$cur_nucl{$id}} = $dna_id;
         }
 
-        $SCHEMA->resultset('FeatureSequence')
-            ->create( { dna_id      => $dna_id,
-                        proteins_id => $prot_id,
-                        features_id => $feature_rs->id });
+        my $gene_rs = $SCHEMA->resultset('Gene')
+            ->create( { 
+                        dna_id      => $dna_id,
+                        protein_id => $prot_id,
+                        isolate_id => $isolate_id,
+                        product    => $cur_prot_annot{$id},
+                      }
+                    );
        
-       if (not $feature_rs->id % 1000) {
-           print   "Feature_seq:", $feature_rs->id
+       if (not $gene_rs->id % 1000) {
+           print   "Gene_seq:", $gene_rs->id
                  , ". Unique_proteins:", scalar keys %ALLprot,
                  , ". Unique_dna:", scalar keys %ALLnucl, "\n";
        }

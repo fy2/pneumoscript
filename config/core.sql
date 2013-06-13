@@ -10,17 +10,6 @@ CREATE TABLE IF NOT EXISTS isolates (
 );
 
 -- -----------------------------------------------------
--- Table features
--- -----------------------------------------------------
-DROP TABLE IF EXISTS features;
-
-CREATE  TABLE IF NOT EXISTS features (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    isolate_id INTEGER,
-    product TEXT
-);
-
--- -----------------------------------------------------
 -- Table proteins
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS proteins ;
@@ -41,12 +30,23 @@ CREATE  TABLE IF NOT EXISTS dna (
 );
 
 -- -----------------------------------------------------
--- Table feature_sequences
+-- Table genes
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS feature_sequences ;
+DROP TABLE IF EXISTS genes ;
 
-CREATE  TABLE IF NOT EXISTS feature_sequences (
+CREATE  TABLE IF NOT EXISTS genes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     dna_id INTEGER,
-    proteins_id INTEGER,
-    features_id INTEGER
+    protein_id INTEGER,
+    isolate_id INTEGER,
+    product TEXT,
+    protein_group_id INTEGER,
+    dna_group_id INTEGER
+
 );
+
+CREATE INDEX protein_idx ON genes (protein_id);
+CREATE INDEX dna_idx ON genes (dna_id);
+CREATE INDEX pgroup_idx ON genes (protein_group_id);
+CREATE INDEX dgroup_idx ON genes (dna_group_id);
+
