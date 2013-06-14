@@ -51,10 +51,11 @@ __END__
 
 =head1 SYNOPSIS
 
-B<$0> [SQLite DB] isolate1.fasta isolate2.fasta ...
+B<$0> seq.db -r blood_isolates isolate1.fasta isolate2.fasta ...
 
  Options:
    -help|h        brief help message
+   -remark|r      add a 'tag' to the isolates (i.e. blood, CSF, etc...)
 
 =head1 DESCRIPTION
 
