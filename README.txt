@@ -44,6 +44,7 @@ $ bash
 $ export PERL5LIB=/nfs/pathogen002/fy2/perllib
 $ PERL5LIB=/nfs/users/nfs_f/fy2/software/CoreGenome:$PERL5LIB
 $ PATH=/nfs/users/nfs_f/fy2/local/bin:$PATH
+$ PATH=/nfs/users/nfs_f/fy2/software/ncbi-blast-2.2.28+/bin:$PATH
 $ PATH=/nfs/users/nfs_f/fy2/bin:$PATH
 $ PATH=/nfs/users/nfs_f/fy2/software/CoreGenome/script:$PATH
 
@@ -53,9 +54,9 @@ $ sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/config/core.sql
 
 #get lanes' protein and nucleotide annotations, e.g. for two lanes:
 $ /nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#49 -s -f ffn
-$ /nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#49 -s -f ffa
+$ /nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#49 -s -f faa
 $ /nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#50 -s -f ffn
-$ /nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#50 -s -f ffa
+$ /nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#50 -s -f faa
 
 #load the isolates and their sequences into the datrabase
 $ db_load_isolates.pl -remark CSF seq.db *
