@@ -62,7 +62,7 @@ mkdir set_dna && cd set_dna
 bsubber.py -e berr -o bout db_unload_dna.pl ../seq.db
 bsubber.py -e berr -o bout makeblastdb -in dna.txt -input_type fasta -parse_seqids -dbtype nucl
 bsubber.py -e berr -o bout split -l 10000 dna.txt chunk.
-ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastn -query {} -db dna.txt -evalue 1E-5 -out {}.blast -parse_deflines -outfmt 6
+ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastn -query {} -db dna.txt -evalue 1E-15 -out {}.blast -parse_deflines -outfmt 6
 cut -f 1,2,11 *.blast > seq.abc
 cat *berr
 rm chunk* *.blast
@@ -82,7 +82,7 @@ mkdir set_prot && cd set_prot
 bsubber.py -e berr -o bout db_unload_protein.pl ../seq.db
 bsubber.py -e berr -o bout makeblastdb -in protein.txt  -input_type fasta -parse_seqids -dbtype prot
 bsubber.py -e berr -o bout split -l 10000 protein.txt chunk.
-ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastp  -query {} -db protein.txt -evalue 1E-5 -matrix BLOSUM90 -out {}.blast -parse_deflines -outfmt 6
+ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastp  -query {} -db protein.txt -evalue 1E-15 -matrix BLOSUM90 -out {}.blast -parse_deflines -outfmt 6
 cut -f 1,2,11 *.blast > seq.abc
 cat *berr
 rm chunk* *.blast
