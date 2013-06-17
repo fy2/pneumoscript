@@ -63,8 +63,8 @@ bsubber.py -e berr -o bout db_unload_dna.pl ../seq.db
 bsubber.py -e berr -o bout makeblastdb -in dna.txt -input_type fasta -parse_seqids -dbtype nucl
 bsubber.py -e berr -o bout split -l 10000 dna.txt chunk.
 ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastn -query {} -db dna.txt -evalue 1E-15 -out {}.blast -parse_deflines -outfmt 6
-cut -f 1,2,11 *.blast > seq.abc
 cat *berr
+cut -f 1,2,11 *.blast > seq.abc
 rm chunk* *.blast
 bsubber.py -e berr -o bout -m 0.8 mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'
 bsubber.py -e berr -o bout -m 1 mcl seq.mci -I 4
@@ -83,8 +83,8 @@ bsubber.py -e berr -o bout db_unload_protein.pl ../seq.db
 bsubber.py -e berr -o bout makeblastdb -in protein.txt  -input_type fasta -parse_seqids -dbtype prot
 bsubber.py -e berr -o bout split -l 10000 protein.txt chunk.
 ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastp  -query {} -db protein.txt -evalue 1E-15 -matrix BLOSUM90 -out {}.blast -parse_deflines -outfmt 6
-cut -f 1,2,11 *.blast > seq.abc
 cat *berr
+cut -f 1,2,11 *.blast > seq.abc
 rm chunk* *.blast
 bsubber.py -e berr -o bout -m 0.8 mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'
 bsubber.py -e berr -o bout -m 1 mcl seq.mci -I 4
