@@ -65,7 +65,7 @@ bsubber.py -e berr -o bout split -l 10000 dna.txt chunk.
 ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastn -query {} -db dna.txt -evalue 1E-15 -out {}.blast -parse_deflines -outfmt 6
 cat *berr
 cut -f 1,2,11 *.blast > seq.abc
-rm chunk* *.blast
+rm chunk*
 bsubber.py -e berr -o bout -m 0.8 mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'
 bsubber.py -e berr -o bout -m 1 mcl seq.mci -I 4
 bsubber.py -e berr -o bout mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict
@@ -85,7 +85,7 @@ bsubber.py -e berr -o bout split -l 10000 protein.txt chunk.
 ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastp  -query {} -db protein.txt -evalue 1E-15 -matrix BLOSUM90 -out {}.blast -parse_deflines -outfmt 6
 cat *berr
 cut -f 1,2,11 *.blast > seq.abc
-rm chunk* *.blast
+rm chunk*
 bsubber.py -e berr -o bout -m 0.8 mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'
 bsubber.py -e berr -o bout -m 1 mcl seq.mci -I 4
 mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict
