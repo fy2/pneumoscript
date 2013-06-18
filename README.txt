@@ -72,11 +72,6 @@ bsubber.py -e berr -o bout mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -ta
 #make sure the last argument is 'dna' in the command below
 bsubber.py -e berr -o bout db_load_groups.pl ../seq.db dump.seq.mci.I140 dna
 
-#Many queries possible (See core.sql)
-$ sqlite3 seq.db 'select dna_group_id, dna_id, product, isolate_id, seq from genes, dna where dna.id = genes.dna_id order by dna_group_id;' | less
-
-
-
 #Protein Analysis
 mkdir set_prot && cd set_prot
 bsubber.py -e berr -o bout db_unload_protein.pl ../seq.db
@@ -92,5 +87,12 @@ mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict
 #make sure the last argument is 'protein' in the command below
 bsubber.py -e berr -o bout db_load_groups.pl ../seq.db dump.seq.mci.I140 protein
 
-#Many queries possible (See core.sql)
-$ sqlite3 seq.test.db 'select protein_group_id, dna_id, product, isolate_id, seq from genes, dna where dna.id = genes.dna_id order by protein_group_id;' | less
+#Querying general:
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberStats.sql       | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberAnnotations.sql | less -S
+
+#Querying Homology Groups based on Protein analysis (replace 'protein' with 'dna' in the path below to get dna related stats:
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql     | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql     | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeNamesPerGroup.sql | less -S
