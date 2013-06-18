@@ -7,5 +7,6 @@ SELECT dna_group_id AS 'Dna_Group'
 FROM genes
     , isolates
 WHERE genes.isolate_id = isolates.id
+    AND genes.dna_group_id IS NOT NULL
 GROUP BY dna_group_id, isolates.remarks
 ;

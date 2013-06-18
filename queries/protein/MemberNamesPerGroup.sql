@@ -7,5 +7,6 @@ SELECT protein_group_id AS 'Protein_Group'
 FROM genes
     , isolates
 WHERE genes.isolate_id = isolates.id
+    AND protein_group_id IS NOT NULL
 GROUP BY protein_group_id
 ORDER BY COUNT(DISTINCT(isolate_id)) DESC;
