@@ -52,10 +52,12 @@ sub run_post_blast {
     run_this("mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'");
     run_this("mcl seq.mci -I $opt_mcl_i");
     run_this('mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict');
-    run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 protein");
-    $opt_type =~ /^pro/i and run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 protein");
-    $opt_type =~ /^dna/i and run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 dna");
+    
+    ($opt_type =~ /^pro/i) and
+        run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 protein");
 
+    ($opt_type =~ /^dna/i) and
+        run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 dna");
 }
 
 sub run_load {

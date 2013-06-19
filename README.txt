@@ -29,12 +29,14 @@ cd ..
 run_core.pl -t dna -s preblast -d seq.db
 
 #8 Go into this directory, created by the last command.
-#(It will be 'set_protein' if running protein analysis):
+#(It will be 'set_prot' if running protein analysis):
 cd set_dna
 
 #8 Run Dna blast (parallelise this if necessary, and cat the files into one file)
 blastn -query dna.fasta -db dna.fasta -evalue 1E-15 -out out.blast -parse_deflines -outfmt 6
-#blastp -query protein.fasta -db protein.txt -evalue 1E-15 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
+
+# For Protein blast:
+#blastp -query protein.fasta -db protein.fasta -evalue 1E-15 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
 
 #9 This will cluster and place the results of blast output
 #IMPORTANT: Replace 'dna' below with 'protein' if running protein analysis:
