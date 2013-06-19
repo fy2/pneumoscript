@@ -24,18 +24,17 @@ run_core.pl -t db -s load -m bac -d ../seq.db *
 #6 Go back up to the main dir:
 cd ..
 
-#7 Run the steps before BLAST (replace 'dna' below with 'protein')
-#for a protein analysis:
+#7 If interested in protein based analysis, replace 'dna' below with 'protein'
 run_core.pl -t dna -s preblast -d seq.db
 
 #8 Go into this directory, created by the last command.
-#(It will be 'set_prot' if running protein analysis):
+# Note: the dir will be named 'set_prot' if running protein analysis:
 cd set_dna
 
 #8 Run Dna blast (parallelise this if necessary, and cat the files into one file)
 blastn -query dna.fasta -db dna.fasta -evalue 1E-15 -out out.blast -parse_deflines -outfmt 6
 
-# For Protein blast:
+# If running protein analysis: use blastp:
 #blastp -query protein.fasta -db protein.fasta -evalue 1E-15 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
 
 #9 This will cluster and place the results of blast output
@@ -54,7 +53,7 @@ sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sq
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql |less
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberTypeNamesPerGroup.sql |less -S
 
-#11 Querying gene clusters for 'dna' analysis:
+#12 Querying gene clusters for 'dna' analysis:
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberCountPerGroup.sql |less
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberNamesPerGroup.sql |less -S
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberTypeCountPerGroup.sql |less
