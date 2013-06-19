@@ -1,44 +1,6 @@
-###########################################################################
-##########################Configuration (for developers####################
-###########################################################################
-$ sqlite3 seq.db < config/core.sql
-$ dbicdump -o dump_directory=./ Genome::Schema 'dbi:SQLite:./seq.db'
-#Dir tree
-├── config
-│   ├── core.sql
-│   └── README.txt
-├── Genome
-│   ├── Schema
-│   │   └── Result
-│   │       ├── Dna.pm
-│   │       ├── Gene.pm
-│   │       ├── Isolate.pm
-│   │       └── Protein.pm
-│   └── Schema.pm
-├── seq.db
-├── README.txt
-├── script
-│   ├── db_load_groups.pl
-│   ├── db_load_isolates.pl
-│   ├── db_load_sequences.pl
-│   ├── db_unload_dna.pl
-│   └── db_unload_protein.pl
-└── testdata
-    ├── 8786_8#49.faa
-    ├── 8786_8#49.ffn
-    ├── 8786_8#50.faa
-    └── 8786_8#50.ffn
+#An Example Run:
 
-6 directories, 18 files
-
-#SQL structure:
-See config/core.sql
-
-
-###########################################################################
-##########################Running a test###################################
-###########################################################################
-#We work in Bourne Shell, type:
+#0 We work in Bourne Shell, type:
 bash
 
 #1 Set the environment:
@@ -66,7 +28,7 @@ cd ..
 #for a protein analysis:
 run_core.pl -t dna -s preblast -d seq.db
 
-#8Go into this directory, created by the last command.
+#8 Go into this directory, created by the last command.
 #(It will be 'set_protein' if running protein analysis):
 cd set_dna
 
@@ -80,10 +42,10 @@ run_core.pl -t dna -s postblast -d ../seq.db -b out.blast
 
 
 
-#Querying general:
+#10 Querying general:
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/MemberStats.sql | less -S
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/MemberAnnotations.sql | less -S
-#Querying Homology Groups based on Protein analysis (replace 'protein' with 'dna' in the path below to get dna related stats:
+#11 Querying Homology Groups based on Protein analysis (replace 'protein' with 'dna' in the path below to get dna related stats:
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql | less -S
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql | less -S
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql | less -S
