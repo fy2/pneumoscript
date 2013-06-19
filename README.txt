@@ -44,11 +44,13 @@ run_core.pl -t dna -s postblast -d ../seq.db -b out.blast
 
 
 
-#10 Querying general:
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/MemberStats.sql | less -S
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/MemberAnnotations.sql | less -S
-#11 Querying Homology Groups based on Protein analysis (replace 'protein' with 'dna' in the path below to get dna related stats:
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql | less -S
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql | less -S
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql | less -S
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeNamesPerGroup.sql | less -S
+#10 Querying for general stats:
+sqlite3 seq.db < ~fy2/software/CoreGenome/queries/MemberStats.sql |less
+sqlite3 seq.db < ~fy2/software/CoreGenome/queries/MemberAnnotations.sql |less
+
+#11 Querying gene clusters (replace 'protein' with 'dna' if interested in
+# in results of your DNA based analysis):
+sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql |less
+sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql |less -S
+sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql |less
+sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberTypeNamesPerGroup.sql |less -S
