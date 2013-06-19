@@ -23,7 +23,7 @@ my $SCHEMA = Genome::Schema->connect("dbi:SQLite:$DB", { AutoCommit => 0 },);
 
 my $rs1 = $SCHEMA->resultset('Protein');
 
-open my $fh1, ">protein.txt" or die $!;
+open my $fh1, ">protein.fasta" or die $!;
 while(my $seq = $rs1->next) {
     my $st = $seq->seq;
     $st =~ s/\*$//;

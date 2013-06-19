@@ -38,61 +38,53 @@ See config/core.sql
 ###########################################################################
 ##########################Running a test###################################
 ###########################################################################
-
-#set the environment paths
+#We work in Bourne Shell, type:
 bash
+
+#1 Set the environment:
 source /nfs/users/nfs_f/fy2/software/CoreGenome/config/setup_pipeline.sh
 
-#create empty DB
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/config/core.sql
+#2 Create the empty DB schema:
+run_core.pl -t db -s db -d seq.db
 
-#get lanes' protein and nucleotide annotations, e.g. for two lanes:
+#3 Create a dir for the annotated genomes and enter it:
 mkdir testdata && cd testdata
-/nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#49 -s -f ffn
-/nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#49 -s -f faa
-/nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#50 -s -f ffn
-/nfs/users/nfs_f/fy2/script/annotationfind -t lane -id 8786_8#50 -s -f faa
 
-#load the isolates and their sequences into the datrabase
-db_load_isolates.pl -remark CSF_Blood_etc ../seq.db *
-bsubber.py -e ../berr -o ../bout -m 1 db_load_sequences.pl ../seq.db *
+#4 softlink the annotations for two test lanes (8786_8#49 and  8786_8#50):
+annotationfind -t lane -id 8786_8#49 -s -f ffn
+annotationfind -t lane -id 8786_8#49 -s -f faa
+annotationfind -t lane -id 8786_8#50 -s -f ffn
+annotationfind -t lane -id 8786_8#50 -s -f faa
 
-#Nucleotide Analysis
-mkdir set_dna && cd set_dna
-bsubber.py -e berr -o bout db_unload_dna.pl ../seq.db
-bsubber.py -e berr -o bout makeblastdb -in dna.txt -input_type fasta -parse_seqids -dbtype nucl
-bsubber.py -e berr -o bout split -l 10000 dna.txt chunk.
-ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastn -query {} -db dna.txt -evalue 1E-15 -out {}.blast -parse_deflines -outfmt 6
-cat *berr
-cut -f 1,2,11 *.blast > seq.abc
-rm chunk*
-bsubber.py -e berr -o bout -m 0.8 mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'
-bsubber.py -e berr -o bout -m 1 mcl seq.mci -I 4
-bsubber.py -e berr -o bout mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict
-#make sure the last argument is 'dna' in the command below
-bsubber.py -e berr -o bout db_load_groups.pl ../seq.db dump.seq.mci.I140 dna
+#5 load the isolates and their annotations into DB:
+run_core.pl -t db -s load -m bac -d ../seq.db *
 
-#Protein Analysis
-mkdir set_prot && cd set_prot
-bsubber.py -e berr -o bout db_unload_protein.pl ../seq.db
-bsubber.py -e berr -o bout makeblastdb -in protein.txt  -input_type fasta -parse_seqids -dbtype prot
-bsubber.py -e berr -o bout split -l 10000 protein.txt chunk.
-ls chunk* | xargs -n 1 -P 1 -t -I {} bsubber.py -q basement -o {}.bout -e {}.berr -m 2 blastp  -query {} -db protein.txt -evalue 1E-15 -matrix BLOSUM90 -out {}.blast -parse_deflines -outfmt 6
-cat *berr
-cut -f 1,2,11 *.blast > seq.abc
-rm chunk*
-bsubber.py -e berr -o bout -m 0.8 mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'
-bsubber.py -e berr -o bout -m 1 mcl seq.mci -I 4
-mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict
-#make sure the last argument is 'protein' in the command below
-bsubber.py -e berr -o bout db_load_groups.pl ../seq.db dump.seq.mci.I140 protein
+#6 Go back up to the main dir:
+cd ..
+
+#7 Run the steps before BLAST (replace 'dna' below with 'protein')
+#for a protein analysis:
+run_core.pl -t dna -s preblast -d seq.db
+
+#8Go into this directory, created by the last command.
+#(It will be 'set_protein' if running protein analysis):
+cd set_dna
+
+#8 Run Dna blast (parallelise this if necessary, and cat the files into one file)
+blastn -query dna.fasta -db dna.fasta -evalue 1E-15 -out out.blast -parse_deflines -outfmt 6
+#blastp -query protein.fasta -db protein.txt -evalue 1E-15 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
+
+#9 This will cluster and place the results of blast output
+#IMPORTANT: Replace 'dna' below with 'protein' if running protein analysis:
+run_core.pl -t dna -s postblast -d ../seq.db -b out.blast
+
+
 
 #Querying general:
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberStats.sql       | less -S
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberAnnotations.sql | less -S
-
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/MemberStats.sql | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/MemberAnnotations.sql | less -S
 #Querying Homology Groups based on Protein analysis (replace 'protein' with 'dna' in the path below to get dna related stats:
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql     | less -S
-sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql     | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql | less -S
+sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql | less -S
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql | less -S
 sqlite3 seq.db < /nfs/users/nfs_f/fy2/software/CoreGenome/queries/protein/MemberTypeNamesPerGroup.sql | less -S
