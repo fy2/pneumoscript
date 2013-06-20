@@ -2,6 +2,7 @@
 # Running An Analysis
 ####################################
 
+
 #0 We work in Bourne Shell, type:
 bash
 
@@ -36,42 +37,16 @@ run_core.pl -t dna -s preblast -d seq.db
 #  Note: the dir will be named 'set_prot' if running protein analysis:
 cd set_dna
 
-#8 Run Dna blast (see 'miscellaneous' section below if you wann to parallelise)
+#8 Run Dna blast (see 'miscellaneous' section below if you want to parallelise)
 blastn -query dna.fasta -db dna.fasta -evalue 1E-15 -out out.blast -parse_deflines -outfmt 6
 
 #8 (ALTERNATIVE) If running protein analysis: use blastp. Choose lower BLOSUM matrices if you are 
-# working with very diverse organisms (see 'miscellaneous' section below if you wann to parallelise)
+# working with very diverse organisms (see 'miscellaneous' section below if you want to parallelise)
 blastp -query protein.fasta -db protein.fasta -evalue 1E-15 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
 
 #9 This will cluster and place the results of blast output
 #  IMPORTANT: Replace 'dna' below with 'protein' if running protein analysis:
 run_core.pl -t dna -s postblast -d ../seq.db -b out.blast
-
-
-
-
-####################################
-# Querying Results
-####################################
-
-#10 Querying general metrics ('Member' is a synonym for organism/isolate/strain):
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/MemberStats.sql |less
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/MemberAnnotations.sql |less
-
-#11 Querying gene clusters for 'protein' analysis:
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberCountPerGroup.sql |less
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql |less -S
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberTypeCountPerGroup.sql |less
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/protein/MemberTypeNamesPerGroup.sql |less -S
-
-#12 Querying gene clusters for 'dna' analysis:
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberCountPerGroup.sql |less
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberNamesPerGroup.sql |less -S
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberTypeCountPerGroup.sql |less
-sqlite3 seq.db < ~fy2/software/CoreGenome/queries/dna/MemberTypeNamesPerGroup.sql |less -S
-
-
-
 
 
 ####################################
@@ -91,6 +66,3 @@ cat *berr
 
 #4 Merge results:
 cat chunk*.blast > out.blast
-
-
-
