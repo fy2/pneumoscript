@@ -56,10 +56,10 @@ run_core.pl -t dna -s postblast -d ../seq.db -b out.blast
 #1 Split your input 'dna.fasta' or 'protein.'fasta' into chunks:
 # If you have a 'dna.fasta' with 100,000 reads and you want
 # chunks of 10,000:
-split -l 10000 chunk.
+split -l 10000 dna.fasta chunk.
 
 #2 Blast the individual chunk files:
-for i in chunk.*; do bsub -o $i.bout -e $i.berr blastn -query $i -db dna.fasta -evalue 1E-15 -out $i.blast -parse_deflines -outfmt 6  ; done
+for i in chunk.*; do bsub -o $i.bout -e $i.berr blastn -query $i -db dna.fasta -evalue 1E-15 -out $i.blast -parse_deflines -outfmt 6; done
 
 #3 Check for errors:
 cat *berr
