@@ -1,6 +1,4 @@
 .header on
-.mode column
-.width 9 13 10 10 10 40
 SELECT
        dna_group_id AS 'Dna_Group'
      , protein_group_id AS 'Protein_Group'

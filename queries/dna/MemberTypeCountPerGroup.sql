@@ -1,5 +1,4 @@
 .header on
-.mode column
 SELECT dna_group_id AS 'Dna_Group'
      , isolates.remarks AS 'Member_Type'
      , COUNT(*) AS 'Sequence_Count'

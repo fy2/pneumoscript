@@ -2,6 +2,12 @@
 # Querying Results
 ####################################
 
+#LSF example:
+bsub "sqlite3 -separator $'\t' seq.db < ~fy2/software/CoreGenome/queries/MemberStats.sql > MemberStatistics.tab"
+bsub "sqlite3 -separator $'\t' seq.db < ~fy2/software/CoreGenome/queries/protein/MemberNamesPerGroup.sql > MemberNamesPerGroup.tab"
+bsub "sqlite3 -separator $'\t' seq.db < ~fy2/software/CoreGenome/queries/protein/MemberProteinIDsPerGroup.sql > MemberProteinIDsPerGroup.tab"
+
+
 #10 Querying general metrics ('Member' is a synonym for organism/isolate/strain):
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/MemberStats.sql |less
 sqlite3 seq.db < ~fy2/software/CoreGenome/queries/MemberAnnotations.sql |less

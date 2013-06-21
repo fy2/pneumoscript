@@ -1,6 +1,4 @@
 .header on
-.mode column
-.width 6 13 6 20 20
 SELECT 
       isolates.id AS 'Member'
     , isolates.sanger_id AS 'Member_Name'

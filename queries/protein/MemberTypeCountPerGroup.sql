@@ -1,5 +1,4 @@
 .header on
-.mode column
 SELECT protein_group_id AS 'Protein_Group'
      , isolates.remarks AS 'Member_Type'
      , COUNT(*) AS 'Sequence_Count'

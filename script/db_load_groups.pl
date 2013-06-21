@@ -44,17 +44,19 @@ sub insert_protein_groups {
         chomp;
         $group_id++;
         my @ids  = split "\t", $_;
-        my $rs = $SCHEMA->resultset('Gene')
-                    ->search({protein_id => { '-in' => [ @ids ] } });
+        while(my @nextfifty = splice @ids, 0, 50) {
+            my $rs = $SCHEMA->resultset('Gene')
+                        ->search({protein_id => { '-in' => [ @nextfifty ] } });
 
-        while (my $gene = $rs->next) { 
-            $gene->protein_group_id($group_id);
-            $gene->update;
-            $i++;
-            if (not $i % 1000) {
-                print $i, "\n"; 
-                $SCHEMA->txn_commit;
-                $SCHEMA->txn_begin;
+            while (my $gene = $rs->next) { 
+                $gene->protein_group_id($group_id);
+                $gene->update;
+                $i++;
+                if (not $i % 1000) {
+                    print $i, "\n"; 
+                    $SCHEMA->txn_commit;
+                    $SCHEMA->txn_begin;
+                }
             }
         }
     }
@@ -72,17 +74,19 @@ sub insert_dna_groups {
         chomp;
         $group_id++;
         my @ids  = split "\t", $_;
-        my $rs = $SCHEMA->resultset('Gene')
-                    ->search({dna_id => { '-in' => [ @ids ] } });
+        while(my @nextfifty = splice @ids, 0, 50) {
+            my $rs = $SCHEMA->resultset('Gene')
+                        ->search({dna_id => { '-in' => [ @nextfifty ] } });
 
-        while (my $gene = $rs->next) { 
-            $gene->dna_group_id($group_id);
-            $gene->update;
-            $i++;
-            if (not $i % 1000) {
-                print $i, "\n"; 
-                $SCHEMA->txn_commit;
-                $SCHEMA->txn_begin;
+            while (my $gene = $rs->next) { 
+                $gene->dna_group_id($group_id);
+                $gene->update;
+                $i++;
+                if (not $i % 1000) {
+                    print $i, "\n"; 
+                    $SCHEMA->txn_commit;
+                    $SCHEMA->txn_begin;
+                }
             }
         }
     }
