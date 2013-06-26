@@ -33,6 +33,7 @@ sub _connect {
     my $self = shift;
     my $db = $self->db;
     $self->_dbh(DBI->connect("dbi:SQLite:dbname=$db","",""));
+    $self->_dbh->{LongReadLen} = 400;
 }
 
 sub load_clusters {
@@ -47,7 +48,7 @@ sub load_clusters {
         , isolates
     WHERE genes.isolate_id = isolates.id
         AND protein_group_id IS NOT NULL
-    GROUP BY protein_group_id, isolates.remarks;
+    GROUP BY protein_group_id;
 END
     my $sth = $self->_dbh->prepare($sql);
     $sth->execute();

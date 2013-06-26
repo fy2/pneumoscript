@@ -42,5 +42,34 @@ sub get_random_isolates {
     return \@ids;
 }
 
+sub get_associated_clusters {
+    my ($self, $isolate_array_ref) = @_;
+    die 'Error: Forgot to load clusters?' if (@{ $self->clusters } == 0);
+
+    my @isolates = @{ $isolate_array_ref };
+    my $isolate_count = scalar @isolates;
+    my %isohash;
+    
+    for my $iso (@isolates) {
+        $isohash{$iso->id} = 1;
+    }
+
+    my @found_clusters;
+    foreach my $cluster ( @{ $self->clusters } ) {
+        my $count=0;
+        MEMBER_LOOP: foreach my $member ( @{$cluster->members} ) {
+            if (exists $isohash{$member} ) {
+                $count++;
+            }
+            if ($count == $isolate_count) {
+                push @found_clusters, $cluster;
+                last MEMBER_LOOP;
+            } 
+        }
+    }
+    return \@found_clusters;
+}
+
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
