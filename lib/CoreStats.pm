@@ -2,37 +2,17 @@ package CoreStats;
 use Moose;
 use Data::Dumper;
 
-has 'isolates' => (
-    traits => ['Array'],
-    is => 'rw',
-    isa => 'ArrayRef[Isolate]',
-    default=> sub { [] },
-    handles => {
-        all_isolates   => 'elements',
-        add_isolate    => 'push',
-        clear_isolates => 'clear',
-        count_isolates => 'count',
-        get_isolate    => 'get',
-    },
-);
-
-has 'clusters' => (
-    is => 'rw',
-    isa => 'ArrayRef',
-    default => sub { [] },
-    );
-
 sub get_random_isolates {
-    my ($self, $how_many) = @_;
-    die 'Error: Forgot to load isolates?' if ($self->count_isolates == 0);
+    my ($self, $isolate_arr, $how_many) = @_;
+    die 'Error: isolate arg empty' if (scalar @{ $isolate_arr } == 0);
     my %seen;
     my @ids;
-    my $total = $self->count_isolates;
+    my $total = @{ $isolate_arr };
     $total--;
     while($how_many > 0) {
         my $id = int(rand($total));
         if ( not (exists $seen{$id}) ) {
-            my $isolate = $self->get_isolate($id);
+            my $isolate = $isolate_arr->[$id];
             die unless (ref $isolate eq 'Isolate');
             push @ids, $isolate;
             $seen{$id} = 1;
@@ -43,10 +23,10 @@ sub get_random_isolates {
 }
 
 sub get_associated_clusters {
-    my ($self, $isolate_array_ref) = @_;
-    die 'Error: Forgot to load clusters?' if (@{ $self->clusters } == 0);
+    my ($self, $isolate_arr, $cluster_arr) = @_;
+    die 'Error: Forgot to load clusters?' if (@{ $cluster_arr } == 0);
 
-    my @isolates = @{ $isolate_array_ref };
+    my @isolates = @{ $isolate_arr };
     my $isolate_count = scalar @isolates;
     my %isohash;
     
@@ -55,7 +35,7 @@ sub get_associated_clusters {
     }
 
     my @found_clusters;
-    foreach my $cluster ( @{ $self->clusters } ) {
+    foreach my $cluster ( @{ $cluster_arr } ) {
         my $count=0;
         MEMBER_LOOP: foreach my $member ( @{$cluster->members} ) {
             if (exists $isohash{$member} ) {
