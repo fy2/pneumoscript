@@ -1,26 +1,31 @@
 package CoreStats;
 use Moose;
 use Data::Dumper;
+use List::Util qw(shuffle);
 
 sub get_random_isolates {
     my ($self, $isolate_arr, $how_many) = @_;
     die 'Error: isolate arg empty' if (scalar @{ $isolate_arr } == 0);
-    my %seen;
-    my @ids;
-    my $total = @{ $isolate_arr };
-    $total--;
-    while($how_many > 0) {
-        my $id = int(rand($total));
-        if ( not (exists $seen{$id}) ) {
-            my $isolate = $isolate_arr->[$id];
-            die unless (ref $isolate eq 'Isolate');
-            push @ids, $isolate;
-            $seen{$id} = 1;
-            $how_many--;
-        }
+    
+    my $all_isolate_count = scalar @{ $isolate_arr };
+    $all_isolate_count--; #makes it a zero based
+
+    #generate a range of random numbers, using List::Util::shuffle:
+    my @shuffled_indices = List::Util::shuffle 0..$all_isolate_count;
+   
+    $how_many--; #makes it a zerobased upper bound
+     
+    my @random_indices = @shuffled_indices[0..$how_many];
+
+    my @random_isolates;
+    foreach my $idx (@random_indices) {
+        push @random_isolates, $isolate_arr->[$idx];
     }
-    return \@ids;
+    
+    return \@random_isolates;
 }
+
+
 
 sub get_associated_clusters {
     my ($self, $isolate_arr, $cluster_arr) = @_;
