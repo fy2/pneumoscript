@@ -16,7 +16,7 @@ my $coredb = CoreDB->new(db=>$db);
 
 #load from db into the object...
 $coredb->load_isolates;
-$coredb->load_clusters;
+$coredb->load_clusters_protein;
 
 
 my $isolate_arr = $stats->get_random_isolates($coredb->isolates, 1); 
@@ -34,7 +34,7 @@ is( ref $isolate_arr, 'ARRAY', 'Got an array ref to random isolates');
 is( scalar @{ $isolate_arr }, 10, 'Array has ten random isolates');
 #warn Dumper $isolate_arr;
 
-my $associated_clust_arr = $stats->get_associated_clusters($isolate_arr, $coredb->clusters); 
+my $associated_clust_arr = $stats->get_associated_clusters($isolate_arr, $coredb->clusters_protein); 
 is( ref $associated_clust_arr, 'ARRAY', 'Got an array ref to associated clusters of random isolates');
 #warn scalar @{$associated_clust_arr};
 done_testing();

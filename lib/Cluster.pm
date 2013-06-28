@@ -1,4 +1,4 @@
-package CoreCluster;
+package Cluster;
 use Moose;
 
 has 'id' => (
@@ -6,11 +6,13 @@ has 'id' => (
     isa => 'Int',
     );
 
+#DNA/protein
 has 'type' => (
     is => 'rw',
     isa => 'Str',
     );
 
+#Bacteraemia/Meningitis
 has 'remark' => (
     is => 'rw',
     isa => 'Str',
@@ -21,6 +23,12 @@ has members => (
     isa => 'ArrayRef',
     default => sub { [] },
     );
+
+has member_count => (
+    is => 'rw',
+    isa => 'Int',
+    );
+
 
 
 no Moose;

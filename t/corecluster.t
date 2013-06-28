@@ -2,11 +2,11 @@ use strict;
 use warnings;
 use Test::More;
 
-BEGIN { use_ok( 'CoreCluster' ); }
+BEGIN { use_ok( 'Cluster' ); }
 
 
-my $clt = CoreCluster->new() ;
-ok( defined($clt) && ref $clt eq 'CoreCluster', 'New worked and returned a CoreStatistics object.' );
+my $clt = Cluster->new() ;
+ok( defined($clt) && ref $clt eq 'Cluster', 'New worked.' );
 
 
 

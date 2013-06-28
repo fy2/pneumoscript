@@ -2,7 +2,7 @@ package CoreDB;
 use Moose;
 use DBI;
 use Genome::Schema;
-use CoreCluster;
+use Cluster;
 use Isolate;
 use Data::Dumper;
 
@@ -17,11 +17,18 @@ has _dbh => (
     isa => 'DBI::db',
     );
 
-has clusters => (
+has clusters_protein => (
     is => 'rw',
-    isa => 'ArrayRef[CoreCluster]',
+    isa => 'ArrayRef[Cluster]',
     default => sub { [] },
     );
+
+has clusters_dna => (
+    is => 'rw',
+    isa => 'ArrayRef[Cluster]',
+    default => sub { [] },
+    );
+
 
 has isolates => (
     is => 'rw',
@@ -36,7 +43,7 @@ sub _connect {
     $self->_dbh->{LongReadLen} = 400;
 }
 
-sub load_clusters {
+sub load_clusters_protein {
     my $self = shift;
     my $sql =<<END;
     SELECT protein_group_id AS 'Protein_Group'
@@ -54,14 +61,42 @@ END
     $sth->execute();
     while(my @row = $sth->fetchrow_array) {
         my @members = split ',', $row[4];
-        my $cluster = CoreCluster->new(id => $row[0],
+        my $cluster = Cluster->new(id => $row[0],
                                        remark=>$row[2],
                                        members=> [@members],
                                        );
-        push @{ $self->clusters }, $cluster;
+        push @{ $self->clusters_protein }, $cluster;
     }
-    return $self->clusters;
+    return $self->clusters_protein;
 }
+
+sub load_clusters_dna {
+    my $self = shift;
+    my $sql =<<END;
+    SELECT dna_group_id AS 'Dna_Group'
+        , COUNT(*) AS 'Sequence_Count'
+        , isolates.remarks AS 'Remarks'
+        , COUNT(DISTINCT(isolate_id)) AS 'Member_Count'
+        , GROUP_CONCAT(DISTINCT(isolates.sanger_id)) AS 'Member_Names'
+    FROM genes
+        , isolates
+    WHERE genes.isolate_id = isolates.id
+        AND dna_group_id IS NOT NULL
+    GROUP BY dna_group_id;
+END
+    my $sth = $self->_dbh->prepare($sql);
+    $sth->execute();
+    while(my @row = $sth->fetchrow_array) {
+        my @members = split ',', $row[4];
+        my $cluster = Cluster->new(id => $row[0],
+                                       remark=>$row[2],
+                                       members=> [@members],
+                                       );
+        push @{ $self->clusters_dna }, $cluster;
+    }
+    return $self->clusters_dna;
+}
+
 
 sub load_isolates {
     my $self = shift;
@@ -79,6 +114,38 @@ END
         push @{ $self->isolates }, $isolate;
     }
     return $self->isolates;
+}
+
+sub get_type_counts_for_dna_clusters {
+    my $self = shift;
+    my %clusters_of;
+
+    my $sql =<<END;
+SELECT dna_group_id AS 'Dna_Group'
+     , isolates.remarks AS 'Member_Type'
+     , COUNT(*) AS 'Sequence_Count'
+     , COUNT(DISTINCT(isolate_id)) AS 'Member_Count'
+FROM genes
+    , isolates
+WHERE genes.isolate_id = isolates.id
+    AND genes.dna_group_id IS NOT NULL
+GROUP BY dna_group_id, isolates.remarks
+;
+END
+    my $sth = $self->_dbh->prepare($sql);
+    $sth->execute();
+    while(my @row = $sth->fetchrow_array) {
+         my $cluster_id = $row[0];
+         my $cluster = Cluster->new(id => $row[0],
+                                    remark=>$row[1],         #should call this phenotype  
+                                    gene_count => $row[2],
+                                    member_count => $row[3],
+                                    type => 'dna',
+                                   );
+         push @{ $clusters_of{$cluster_id} }, $cluster;
+    }
+
+    return \%clusters_of;
 }
 
 no Moose;
