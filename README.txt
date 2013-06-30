@@ -63,6 +63,7 @@ for i in chunk.*; do bsub -o $i.bout -e $i.berr blastn -query $i -db dna.fasta -
 
 #3 Check for errors:
 cat *berr
+cat *bout | grep -E -i (exited|terminated)
 
 #4 Merge results:
 cat chunk*.blast > out.blast

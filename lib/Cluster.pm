@@ -18,6 +18,13 @@ has 'remark' => (
     isa => 'Str',
     );
 
+#Choline binding protein, tetM etc...
+has 'product' => (
+    is => 'rw',
+    isa => 'Str',
+    );
+
+
 has members => (
     is => 'rw',
     isa => 'ArrayRef',
