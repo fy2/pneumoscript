@@ -38,11 +38,11 @@ run_core.pl -t dna -s preblast -d seq.db
 cd set_dna
 
 #8 Run Dna blast (see 'miscellaneous' section below if you want to parallelise)
-blastn -query dna.fasta -db dna.fasta -evalue 1E-15 -out out.blast -parse_deflines -outfmt 6
+blastn -query dna.fasta -db dna.fasta -evalue 1E-5 -out out.blast -parse_deflines -outfmt 6
 
 #8 (ALTERNATIVE) If running protein analysis: use blastp. Choose lower BLOSUM matrices if you are 
 # working with very diverse organisms (see 'miscellaneous' section below if you want to parallelise)
-blastp -query protein.fasta -db protein.fasta -evalue 1E-15 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
+blastp -query protein.fasta -db protein.fasta -evalue 1E-5 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
 
 #9 This will cluster and place the results of blast output
 #  IMPORTANT: Replace 'dna' below with 'protein' if running protein analysis:
@@ -59,7 +59,7 @@ run_core.pl -t dna -s postblast -d ../seq.db -b out.blast
 split -l 10000 dna.fasta chunk.
 
 #2 Blast the individual chunk files:
-for i in chunk.*; do bsub -o $i.bout -e $i.berr blastn -query $i -db dna.fasta -evalue 1E-15 -out $i.blast -parse_deflines -outfmt 6; done
+for i in chunk.*; do bsub -o $i.bout -e $i.berr blastn -query $i -db dna.fasta -evalue 1E-5 -out $i.blast -parse_deflines -outfmt 6; done
 
 #3 Check for errors:
 cat *berr
