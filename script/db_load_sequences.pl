@@ -37,6 +37,9 @@ sub load_sequences {
         db_insert($faa, $ffn, $isolate_id);
     }
 }
+print   "Gene_seq:", 'last row'
+     , ". Unique_proteins:", scalar keys %ALLprot,
+     , ". Unique_dna:", scalar keys %ALLnucl, "\n";
 
 sub db_insert {
     my ($faa, $ffn, $isolate_id) = @_;
