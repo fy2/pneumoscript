@@ -3,7 +3,7 @@
 ####################################
 
 
-#0 We work in Bourne Shell, type:
+#0 We work in Bourne Shell (if you are using tcsh etc...), type:
     bash
 
 #1 Set the environment:
