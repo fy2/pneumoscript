@@ -38,19 +38,25 @@ my $all_isolates_arr = $coredb->isolates;
 my $all_prot_clusters_arr = $coredb->clusters_protein;
 my $all_dna_clusters_arr = $coredb->clusters_dna;
 
-my @bac_only_isolates = grep { $_->remark eq 'bac' } @{ $all_isolates_arr };
-my @men_only_isolates = grep { $_->remark eq 'men' } @{ $all_isolates_arr };
+my @types = $coredb->get_distinct_types;
+
+if (scalar @types !=2) {
+    die "This version supports exactly two types of phenotypes, but you had these:". Dumper(\@types) 
+}
+
+my @type1_isolates = grep { $_->remark eq $types[0] } @{ $all_isolates_arr };
+my @type2_isolates = grep { $_->remark eq $types[1] } @{ $all_isolates_arr };
 
 
-print "BAC ISOLATES PROTEIN-BASED CLUSTER\n";
-dump_exponential(\@bac_only_isolates, $all_prot_clusters_arr, 100);
-print "MEN ISOLATES PROTEIN-BASED CLUSTER\n";
-dump_exponential(\@men_only_isolates, $all_prot_clusters_arr, 100);
+print "'$types[0]' ISOLATES PROTEIN-BASED CLUSTER\n";
+dump_exponential(\@type1_isolates, $all_prot_clusters_arr, 100);
+print "'$types[1]' ISOLATES PROTEIN-BASED CLUSTER\n";
+dump_exponential(\@type2_isolates, $all_prot_clusters_arr, 100);
 
-print "BAC ISOLATES DNA-BASED CLUSTER\n";
-dump_exponential(\@bac_only_isolates, $all_dna_clusters_arr, 100);
-print "MEN ISOLATES DNA-BASED CLUSTER\n";
-dump_exponential(\@men_only_isolates, $all_dna_clusters_arr, 100);
+print "'$types[0]' ISOLATES DNA-BASED CLUSTER\n";
+dump_exponential(\@type1_isolates, $all_dna_clusters_arr, 100);
+print "'$types[1]' ISOLATES DNA-BASED CLUSTER\n";
+dump_exponential(\@type2_isolates, $all_dna_clusters_arr, 100);
 
 
 
@@ -80,6 +86,12 @@ __END__
 =head1 SYNOPSIS
 
 B<exponential.pl> -d seq.db 
+
+=over 4
+
+B<Currently, only supports databases where two types (phenotypes) isolates have been defined.>
+
+=back
 
  Options:
    -help|h        brief help message

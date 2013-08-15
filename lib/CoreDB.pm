@@ -182,6 +182,26 @@ END
     return \%clusters_of;
 }
 
+sub get_distinct_types {
+    my $self = shift;
+
+    my $sql =<<END;
+SELECT
+     DISTINCT(isolates.remarks)
+FROM 
+     isolates
+;
+END
+
+    my @types;
+    my $sth = $self->_dbh->prepare($sql);
+    $sth->execute();
+    while(my @row = $sth->fetchrow_array) {
+       push @types, @row;
+    }
+    return @types;
+}
+
 
 
 no Moose;

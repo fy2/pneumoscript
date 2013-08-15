@@ -24,4 +24,12 @@ is( ref $coredb->get_type_counts_for_dna_clusters, 'HASH', 'Got the type counts 
 
 is( scalar keys %{ $coredb->get_type_counts_for_dna_clusters}, 5, 'Cluster count for DNA is right.');
 
+can_ok($coredb, qw(get_distinct_types));
+my @distinct_types;
+@distinct_types = sort $coredb->get_distinct_types;
+is( scalar @distinct_types, 2, "Two isolate types received");
+
+is( $distinct_types[0], 'bac', 'First type is "bac" if lexical sorting in place');
+is( $distinct_types[1], 'men', 'Second type is "men" if lexical sorting in place');
+
 done_testing();
