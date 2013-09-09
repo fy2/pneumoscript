@@ -40,9 +40,21 @@ my $all_dna_clusters_arr = $coredb->clusters_dna;
 
 
 print "ALL ISOLATES PROTEIN-BASED CLUSTER\n";
-dump_exponential($all_isolates_arr, $all_prot_clusters_arr, 100);
+if ( scalar @{$all_prot_clusters_arr} == 0 ) {
+    print "No Protein-based clusters found, skipping.\n";
+}
+else {
+    dump_exponential($all_isolates_arr, $all_prot_clusters_arr, 100);
+}
+
+
 print "ALL ISOLATES DNA-BASED CLUSTER\n";
-dump_exponential($all_isolates_arr, $all_dna_clusters_arr, 100);
+if ( scalar @{$all_dna_clusters_arr} == 0 ) {
+    print "No DNA-based clusters found, skipping.\n"; 
+} 
+else {
+    dump_exponential($all_isolates_arr, $all_dna_clusters_arr, 100);
+}
 
 
 
@@ -70,8 +82,6 @@ __END__
 =head1 NAME
 
 =head1 SYNOPSIS
-
-B<exponential.pl> -d seq.db 
 
  Options:
    -help|h        brief help message
