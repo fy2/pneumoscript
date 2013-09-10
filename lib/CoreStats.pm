@@ -3,6 +3,12 @@ use Moose;
 use Data::Dumper;
 use List::Util qw(shuffle);
 
+=head2 get_random_isolates
+
+arrayref to isolates
+
+=cut
+
 sub get_random_isolates {
     my ($self, $isolate_arr, $how_many) = @_;
     die 'Error: isolate arg empty' if (scalar @{ $isolate_arr } == 0);
@@ -25,7 +31,11 @@ sub get_random_isolates {
     return \@random_isolates;
 }
 
+=head2 get_associated_clusters
 
+arrayref to cluster objects
+
+=cut
 
 sub get_associated_clusters {
     my ($self, $isolate_arr, $cluster_arr) = @_;
@@ -54,7 +64,6 @@ sub get_associated_clusters {
     }
     return \@found_clusters;
 }
-
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

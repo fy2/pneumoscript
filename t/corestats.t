@@ -10,7 +10,7 @@ my $stats = CoreStats->new() ;
 
 is( ref $stats, 'CoreStats', 'New works.' );
 
-my $db = './data/seq.db';
+my $db = './t/data/seq.db';
 
 my $coredb = CoreDB->new(db=>$db);
 

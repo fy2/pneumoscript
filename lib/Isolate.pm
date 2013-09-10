@@ -11,5 +11,11 @@ has 'remark' => (
     isa => 'Str',
     );
 
+has 'sanger_id' => (
+    is => 'rw',
+    isa => 'Str',
+    );
+
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
