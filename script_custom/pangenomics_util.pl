@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use lib qw(/Users/fy2/software/pneumoscript/lib /Users/fy2/software/pneumoscript);
+use lib qw(/nfs/users/nfs_f/fy2/software/CoreGenomeUnofficial/lib /nfs/users/nfs_f/fy2/software/CoreGenomeUnofficial);
 use Data::Dumper;
 use Getopt::Long;
 use Pod::Usage;
@@ -40,8 +40,6 @@ given ($opt_cmd) {
     when( 'dna_seq_by_id')  { continue }
     default                 { die "unknown command: '$opt_cmd'" }
 }
-
-
 
 __END__
 

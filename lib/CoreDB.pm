@@ -255,8 +255,13 @@ END
     my $sth = $self->_dbh->prepare($sql);
     $sth->execute();
     while(my ($id) = $sth->fetchrow_array) {
-       push @ids, $id;
+       push @ids, $id if defined $id;
     }
+    if (scalar @ids == 0) {
+        print STDERR "no protein groups are present in your database";
+        die;
+    }
+
     return @ids;
 }
 
@@ -276,8 +281,14 @@ END
     my $sth = $self->_dbh->prepare($sql);
     $sth->execute();
     while(my ($id) = $sth->fetchrow_array) {
-       push @ids, $id;
+       push @ids, $id if defined $id;
     }
+ 
+    if (scalar @ids == 0) {
+       print STDERR "no dna groups are present in your database";
+       die;
+    }
+    
     return @ids;
 }
 
@@ -294,8 +305,9 @@ SELECT GROUP_CONCAT(LENGTH(proteins.seq),',') FROM genes, proteins
 WHERE protein_group_id = ? AND proteins.id = genes.protein_id;
 END
     my @lens;
-    my $sth = $self->_dbh->prepare($sql);
-    $sth->execute($group_id);
+    my $sth = $self->_dbh->prepare($sql) or die $self->_dbh->errstr;
+    $sth->execute($group_id) or die $self->_dbh->errstr ;
+    
     while(my ( $lengths) = $sth->fetchrow_array) {
        @lens = split ',', $lengths;
     }
