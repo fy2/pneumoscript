@@ -17,3 +17,6 @@
 
 #4 Merge results:
     cat chunk*.blast > out.blast
+
+#5 clean up chunks:
+    rm -f chunk*

@@ -21,22 +21,20 @@
     #  You can designate your isolates with the -m option.
     run_core.pl -stage load -metainfo MyBadPathogens -database ../seq.db *
 
-    #Go back to the main dir:
+    #Back one higher in directory hierarchy:
     cd ..
 
-#6 Fetch the "dna.fasta" or "protein.fasta" files for BLAST later...
+#6 Prepare the directories and files for sequence comparison step:
     run_core.pl -stage preblast -database seq.db
 
-#7 This last command creates two dirs: "set_prot" and "set_dna". You can base the rest of your analysis on either of these. 
-#  Follow the steps below for protein analysis. (For DNA, just change the blast algorithm into blastn. Everything will else is identical to protein analysis).
+#7 The last command creates two dirs: "set_prot" and "set_dna". You can base the rest of your analysis on proteins or dna. 
+#  Follow the steps below for a protein type of analysis. For DNA, change to a blastn type of search.
 
-    # Choose an appropriate BLOSUM matrix and e-value.
-    # If you have > 50,000 sequences, you might want to parallelise the blastp step by splitting the query into smaller files
-    # and submitting independt LSF jobs.
+    # Choose an appropriate BLOSUM matrix and e-value level.
         cd set_prot
         blastp -query protein.fasta -db protein.fasta -evalue 1E-5 -matrix BLOSUM90 -out out.blast -parse_deflines -outfmt 6
 
 #8 Start clustering (while still in the "set_prot" dir)
     run_core.pl -stage postblast -database ../seq.db -blastfile out.blast
 
-# Now you can run queries to inspect the results of the analysis. See the file "Queries.sql" for examples.
+#9 Run queries to inspect the results. See "Queries.sql" for examples.

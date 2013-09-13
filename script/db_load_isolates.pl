@@ -25,7 +25,6 @@ my $DBH = DBI->connect($dsn, {RaiseError => 1, AutoCommit => 0} );
 load_isolates(@ARGV);
 
 
-
 sub load_isolates {
     my @isolate_files  = @_;
     
