@@ -1,1 +1,0 @@
-exponential_ALL.pl

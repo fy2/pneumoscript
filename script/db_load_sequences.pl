@@ -37,7 +37,7 @@ sub load_sequences {
         db_insert($faa, $ffn, $isolate_id);
     }
 }
-print   "Gene_seq:", 'last row'
+print   "Seq:", 'last row'
      , ". Unique_proteins:", scalar keys %ALLprot,
      , ". Unique_dna:", scalar keys %ALLnucl, "\n";
 
@@ -96,7 +96,7 @@ sub db_insert {
             $ALLnucl{$cur_nucl{$id}} = $dna_id;
         }
 
-        my $gene_rs = $SCHEMA->resultset('Gene')
+        my $sequence_rs = $SCHEMA->resultset('Sequence')
             ->create( { 
                         dna_id      => $dna_id,
                         protein_id => $prot_id,
@@ -105,8 +105,8 @@ sub db_insert {
                       }
                     );
        
-       if (not $gene_rs->id % 1000) {
-           print   "Gene_seq:", $gene_rs->id
+       if (not $sequence_rs->id % 1000) {
+           print   "Seq:", $sequence_rs->id
                  , ". Unique_proteins:", scalar keys %ALLprot,
                  , ". Unique_dna:", scalar keys %ALLnucl, "\n";
        }

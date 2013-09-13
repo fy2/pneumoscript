@@ -14,7 +14,6 @@ my ($opt_help, $opt_type, $opt_db);
 
 GetOptions(
   'help|h'        => \$opt_help,
-  'type|t=s'      => \$opt_type,
   'database|d=s'  => \$opt_db,
 ) or pod2usage(-verbose => 1) && exit;
 
@@ -29,14 +28,8 @@ $opt_db = File::Spec->rel2abs($opt_db);
 
 my $coredb = CoreDB->new(db=>$opt_db);
 
-#DNA clusters
 
-print "DNA\n";
-dump_specific_clusters($coredb->get_type_counts_for_dna_clusters);
-
-print "\n\n\n";
-print "PROTEIN\n";
-dump_specific_clusters($coredb->get_type_counts_for_protein_clusters);
+dump_specific_clusters($coredb->get_type_counts_for_clusters);
 
 
 sub dump_specific_clusters {

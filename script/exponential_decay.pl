@@ -14,7 +14,6 @@ my ($opt_help, $opt_type, $opt_db);
 
 GetOptions(
   'help|h'        => \$opt_help,
-  'type|t=s'      => \$opt_type,
   'database|d=s'  => \$opt_db,
 ) or pod2usage(-verbose => 1) && exit;
 
@@ -32,30 +31,17 @@ my $stats = CoreStats->new();
 
 #load from db into the object:
 $coredb->load_isolates;
-$coredb->load_clusters_protein;
-$coredb->load_clusters_dna;
+$coredb->load_clusters;
 my $all_isolates_arr = $coredb->isolates;
-my $all_prot_clusters_arr = $coredb->clusters_protein;
-my $all_dna_clusters_arr = $coredb->clusters_dna;
+my $all_clusters_arr = $coredb->clusters;
 
 
-print "ALL ISOLATES PROTEIN-BASED CLUSTER\n";
-if ( scalar @{$all_prot_clusters_arr} == 0 ) {
-    print "No Protein-based clusters found, skipping.\n";
+if ( scalar @{$all_clusters_arr} == 0 ) {
+    print "No clusters found, skipping.\n";
 }
 else {
-    dump_exponential($all_isolates_arr, $all_prot_clusters_arr, 100);
+    dump_exponential($all_isolates_arr, $all_clusters_arr, 100);
 }
-
-
-print "ALL ISOLATES DNA-BASED CLUSTER\n";
-if ( scalar @{$all_dna_clusters_arr} == 0 ) {
-    print "No DNA-based clusters found, skipping.\n"; 
-} 
-else {
-    dump_exponential($all_isolates_arr, $all_dna_clusters_arr, 100);
-}
-
 
 
 sub dump_exponential {

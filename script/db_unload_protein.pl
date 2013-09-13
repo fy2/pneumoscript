@@ -27,7 +27,7 @@ open my $fh1, ">protein.fasta" or die $!;
 while(my $seq = $rs1->next) {
     my $st = $seq->seq;
     $st =~ s/\*$//;
-    print $fh1 ">", $seq->id, "\n", $st, "\n";
+    print $fh1 ">p", $seq->id, "\n", $st, "\n";
 }
         
 __END__

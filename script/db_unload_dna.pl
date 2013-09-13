@@ -27,7 +27,7 @@ open my $fh1, ">dna.fasta" or die $!;
 while(my $seq = $rs1->next) {
     my $st = $seq->seq;
     $st =~ s/\*$//;
-    print $fh1 ">", $seq->id, "\n", $st, "\n";
+    print $fh1 ">d", $seq->id, "\n", $st, "\n";
 }
         
 __END__

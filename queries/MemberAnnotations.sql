@@ -1,13 +1,12 @@
 .header on
 SELECT
-       dna_group_id AS 'Dna_Group'
-     , protein_group_id AS 'Protein_Group'
-     , isolates.sanger_id AS 'Member_ID'
-     , genes.dna_id AS 'Dna_ID'
-     , genes.protein_id AS 'Protein_ID'
-     , product AS 'Member_Annotation'
+       group_id AS 'GroupID'
+     , isolates.sanger_id AS 'MemberName'
+     , sequences.dna_id AS 'DnaID'
+     , sequences.protein_id AS 'ProteinID'
+     , product AS 'Annotation'
 
-FROM genes
+FROM sequences
     , isolates
-WHERE isolates.id = genes.isolate_id
-ORDER BY dna_group_id ASC;
+WHERE isolates.id = sequences.isolate_id
+ORDER BY group_id ASC;

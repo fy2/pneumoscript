@@ -1,0 +1,19 @@
+####################################
+# Miscellaneous: Parallelised BLAST
+####################################
+
+#1 Split your input 'dna.fasta' or 'protein.'fasta' into chunks:
+    # If you have a 'dna.fasta' with 100,000 reads and you want
+    # chunks of 10,000 line (This works because sequences are in one line and
+    # division by an even number wont split any entry in half):
+    split -l 10000 dna.fasta chunk.
+
+#2 Blast the individual chunk files:
+    for i in chunk.*; do bsub -o $i.bout -e $i.berr blastn -query $i -db dna.fasta -evalue 1E-5 -out $i.blast -parse_deflines -outfmt 6; done
+
+#3 Check for errors:
+    cat *berr
+    cat *bout | grep -E -i "(exited|terminated)"
+
+#4 Merge results:
+    cat chunk*.blast > out.blast

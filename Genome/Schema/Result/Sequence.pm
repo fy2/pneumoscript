@@ -1,12 +1,12 @@
 use utf8;
-package Genome::Schema::Result::Gene;
+package Genome::Schema::Result::Sequence;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-Genome::Schema::Result::Gene
+Genome::Schema::Result::Sequence
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<genes>
+=head1 TABLE: C<sequences>
 
 =cut
 
-__PACKAGE__->table("genes");
+__PACKAGE__->table("sequences");
 
 =head1 ACCESSORS
 
@@ -49,12 +49,7 @@ __PACKAGE__->table("genes");
   data_type: 'text'
   is_nullable: 1
 
-=head2 protein_group_id
-
-  data_type: 'integer'
-  is_nullable: 1
-
-=head2 dna_group_id
+=head2 group_id
 
   data_type: 'integer'
   is_nullable: 1
@@ -72,9 +67,7 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 1 },
   "product",
   { data_type => "text", is_nullable => 1 },
-  "protein_group_id",
-  { data_type => "integer", is_nullable => 1 },
-  "dna_group_id",
+  "group_id",
   { data_type => "integer", is_nullable => 1 },
 );
 
@@ -91,8 +84,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-06-13 15:50:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DEe4m9Y2a6NSpCo7f6ATHw
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-09-13 12:32:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:20m1Oeq4V1n3QVnUYoFkIw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

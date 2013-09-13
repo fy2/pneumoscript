@@ -19,18 +19,11 @@ has _dbh => (
     isa => 'DBI::db',
     );
 
-has clusters_protein => (
+has clusters => (
     is => 'rw',
     isa => 'ArrayRef[Cluster]',
     default => sub { [] },
     );
-
-has clusters_dna => (
-    is => 'rw',
-    isa => 'ArrayRef[Cluster]',
-    default => sub { [] },
-    );
-
 
 has isolates => (
     is => 'rw',
@@ -45,27 +38,27 @@ sub _connect {
     $self->_dbh->{LongReadLen} = 400;
 }
 
-=head2 load_clusters_protein
+=head2 load_clusters
 
 Make "Cluster" objects which can hold this data:
-Protein group_id, sequence count in cluster, member remarks, distinct member counts,
+group_id, sequence count in cluster, member remarks, distinct member counts,
 distinct member names
 
 =cut
 
-sub load_clusters_protein {
+sub load_clusters {
     my $self = shift;
     my $sql =<<END;
-    SELECT protein_group_id AS 'Protein_Group'
+    SELECT group_id AS 'Group'
         , COUNT(*) AS 'Sequence_Count'
         , isolates.remarks AS 'Remarks'
         , COUNT(DISTINCT(isolate_id)) AS 'Member_Count'
         , GROUP_CONCAT(DISTINCT(isolates.sanger_id)) AS 'Member_Names'
-    FROM genes
+    FROM sequences
         , isolates
-    WHERE genes.isolate_id = isolates.id
-        AND protein_group_id IS NOT NULL
-    GROUP BY protein_group_id;
+    WHERE sequences.isolate_id = isolates.id
+        AND group_id IS NOT NULL
+    GROUP BY group_id;
 END
     my $sth = $self->_dbh->prepare($sql);
     $sth->execute();
@@ -75,44 +68,9 @@ END
                                        remark=>$row[2],
                                        members=> [@members],
                                        );
-        push @{ $self->clusters_protein }, $cluster;
+        push @{ $self->clusters }, $cluster;
     }
-    return $self->clusters_protein;
-}
-
-=head2 load_clusters_dna
-
-Make "Cluster" objects which can hold this data:
-DNA group_id, sequence count in cluster, member remarks, distinct member counts,
-distinct member names
-
-=cut
-
-sub load_clusters_dna {
-    my $self = shift;
-    my $sql =<<END;
-    SELECT dna_group_id AS 'Dna_Group'
-        , COUNT(*) AS 'Sequence_Count'
-        , isolates.remarks AS 'Remarks'
-        , COUNT(DISTINCT(isolate_id)) AS 'Member_Count'
-        , GROUP_CONCAT(DISTINCT(isolates.sanger_id)) AS 'Member_Names'
-    FROM genes
-        , isolates
-    WHERE genes.isolate_id = isolates.id
-        AND dna_group_id IS NOT NULL
-    GROUP BY dna_group_id;
-END
-    my $sth = $self->_dbh->prepare($sql);
-    $sth->execute();
-    while(my @row = $sth->fetchrow_array) {
-        my @members = split ',', $row[4];
-        my $cluster = Cluster->new(id => $row[0],
-                                       remark=>$row[2],
-                                       members=> [@members],
-                                       );
-        push @{ $self->clusters_dna }, $cluster;
-    }
-    return $self->clusters_dna;
+    return $self->clusters;
 }
 
 =head2 load_isolates
@@ -139,27 +97,27 @@ END
     return $self->isolates;
 }
 
-=head2 get_type_counts_for_dna_clusters
+=head2 get_type_counts_for_clusters
 
 hashref
 
 =cut
 
-sub get_type_counts_for_dna_clusters {
+sub get_type_counts_for_clusters {
     my $self = shift;
     my %clusters_of;
 
     my $sql =<<END;
-SELECT genes.dna_group_id AS 'Dna_Group'
+SELECT sequences.group_id AS 'Group'
      , isolates.remarks AS 'Member_Type'
      , COUNT(*) AS 'Sequence_Count'
-     , COUNT(DISTINCT(genes.isolate_id)) AS 'Member_Count'
-     , SUBSTR(GROUP_CONCAT(genes.product), 1,40) AS 'Product'
-FROM genes
+     , COUNT(DISTINCT(sequences.isolate_id)) AS 'Member_Count'
+     , SUBSTR(GROUP_CONCAT(sequences.product), 1,40) AS 'Product'
+FROM sequences
     , isolates
-WHERE genes.isolate_id = isolates.id
-    AND genes.dna_group_id IS NOT NULL
-GROUP BY genes.dna_group_id, isolates.remarks
+WHERE sequences.isolate_id = isolates.id
+    AND sequences.group_id IS NOT NULL
+GROUP BY sequences.group_id, isolates.remarks
 ;
 END
     my $sth = $self->_dbh->prepare($sql);
@@ -171,46 +129,6 @@ END
                                     gene_count => $row[2],
                                     member_count => $row[3],
                                     product => $row[4] . '...',
-                                    type => 'dna',
-                                   );
-         push @{ $clusters_of{$cluster_id} }, $cluster;
-    }
-    return \%clusters_of;
-}
-
-=head2 get_type_counts_for_protein_clusters
-
-hashref
-
-=cut
-
-sub get_type_counts_for_protein_clusters {
-    my $self = shift;
-    my %clusters_of;
-
-    my $sql =<<END;
-SELECT genes.protein_group_id AS 'Protein_Group'
-     , isolates.remarks AS 'Member_Type'
-     , COUNT(*) AS 'Sequence_Count'
-     , COUNT(DISTINCT(genes.isolate_id)) AS 'Member_Count'
-     , SUBSTR(GROUP_CONCAT(genes.product), 1,40) AS 'Product'
-FROM genes
-    , isolates
-WHERE genes.isolate_id = isolates.id
-    AND genes.protein_group_id IS NOT NULL
-GROUP BY genes.protein_group_id, isolates.remarks
-;
-END
-    my $sth = $self->_dbh->prepare($sql);
-    $sth->execute();
-    while(my @row = $sth->fetchrow_array) {
-         my $cluster_id = $row[0];
-         my $cluster = Cluster->new(id => $row[0],
-                                    remark=>$row[1],         #should call this phenotype  
-                                    gene_count => $row[2],
-                                    member_count => $row[3],
-                                    product => $row[4] . '...',
-                                    type => 'protein',
                                    );
          push @{ $clusters_of{$cluster_id} }, $cluster;
     }
@@ -239,17 +157,17 @@ END
     return @types;
 }
 
-=head2 get_protein_group_ids
+=head2 get_group_ids
 
 arr
 
 =cut
 
-sub get_protein_group_ids {
+sub get_group_ids {
     my $self = shift;
 
     my $sql =<<END;
-SELECT DISTINCT(genes.protein_group_id) FROM genes ORDER BY genes.protein_group_id;
+SELECT DISTINCT(sequences.group_id) FROM sequences ORDER BY sequences.group_id;
 END
     my @ids;
     my $sth = $self->_dbh->prepare($sql);
@@ -258,51 +176,24 @@ END
        push @ids, $id if defined $id;
     }
     if (scalar @ids == 0) {
-        print STDERR "no protein groups are present in your database";
+        print STDERR "no groups are present in your database";
         die;
     }
 
     return @ids;
 }
 
-=head2 get_dna_cluster_ids
-
-arr
-
-=cut
-
-sub get_dna_group_ids {
-    my $self = shift;
-
-    my $sql =<<END;
-SELECT DISTINCT(genes.dna_group_id) FROM genes ORDER BY genes.dna_group_id;
-END
-    my @ids;
-    my $sth = $self->_dbh->prepare($sql);
-    $sth->execute();
-    while(my ($id) = $sth->fetchrow_array) {
-       push @ids, $id if defined $id;
-    }
- 
-    if (scalar @ids == 0) {
-       print STDERR "no dna groups are present in your database";
-       die;
-    }
-    
-    return @ids;
-}
-
 =head2 get_clustered_protein_lengths_by_group_id
 
-hashref: hashref->{protein_group_id} = [ (lengths of proteins) ];
+hashref: hashref->{group_id} = [ (lengths of proteins) ];
 
 =cut
 
 sub get_clustered_protein_lengths_by_group_id {
     my ($self, $group_id) = @_;
     my $sql =<<END;
-SELECT GROUP_CONCAT(LENGTH(proteins.seq),',') FROM genes, proteins 
-WHERE protein_group_id = ? AND proteins.id = genes.protein_id;
+SELECT GROUP_CONCAT(LENGTH(proteins.seq),',') FROM sequences, proteins 
+WHERE group_id = ? AND proteins.id = sequences.protein_id;
 END
     my @lens;
     my $sth = $self->_dbh->prepare($sql) or die $self->_dbh->errstr;
@@ -314,28 +205,28 @@ END
     return @lens;
 }
 
-=head2 get_elements_by_protein_group_id 
+=head2 get_elements_by_group_id 
 
-Array of 'Element' objects, which together constitute a protein cluster.
+Array of 'Element' objects, which together constitute a cluster.
 Elements are more or less the rows of the gene table which is joined 
 with proteins, dna and isolates for some more info.
 
 =cut
 
-sub get_elements_by_protein_group_id {
+sub get_elements_by_group_id {
     my ($self, $group_id) = @_;
     my $sql =<<END;
-SELECT genes.id, 
+SELECT sequences.id, 
         isolates.sanger_id, 
-        genes.product, 
+        sequences.product, 
         dna.seq, 
         proteins.seq 
-FROM genes, proteins, dna, isolates
+FROM sequences, proteins, dna, isolates
 WHERE 
-    protein_group_id = ? 
-    AND proteins.id = genes.protein_id
-    AND dna.id = genes.dna_id
-    AND isolates.id = genes.isolate_id;
+    group_id = ? 
+    AND proteins.id = sequences.protein_id
+    AND dna.id = sequences.dna_id
+    AND isolates.id = sequences.isolate_id;
 END
     my @elements;
     my $sth = $self->_dbh->prepare($sql);

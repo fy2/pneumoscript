@@ -11,7 +11,7 @@ $ dbicdump -o dump_directory=./ Genome::Schema 'dbi:SQLite:./seq.db'
 │   ├── Schema
 │   │   └── Result
 │   │       ├── Dna.pm
-│   │       ├── Gene.pm
+│   │       ├── Sequence.pm
 │   │       ├── Isolate.pm
 │   │       └── Protein.pm
 │   └── Schema.pm

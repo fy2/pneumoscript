@@ -8,12 +8,11 @@ use Getopt::Long;
 use Pod::Usage;
 use File::Spec;
 
-my ($opt_help, $opt_type, $opt_db, $opt_stage, $opt_blast);
+my ($opt_help, $opt_db, $opt_stage, $opt_blast);
 my ($opt_mcl_i, $opt_meta) = (4, 'N.A.');
 
 GetOptions(
   'help|h'        => \$opt_help,
-  'type|t=s'      => \$opt_type,
   'stage|s=s'     => \$opt_stage,
   'database|d=s'  => \$opt_db,
   'metainfo|m=s'  => \$opt_meta,
@@ -31,19 +30,15 @@ $opt_stage =~ /^pre/i  and run_pre_blast();
 $opt_stage =~ /^post/i and run_post_blast();
 
 sub run_pre_blast {
-
-    if ($opt_type =~ /prot/i) {
-        run_this("mkdir set_prot");
-        chdir 'set_prot';
-        run_this("db_unload_protein.pl $opt_db");
-        run_this('makeblastdb -in protein.fasta -input_type fasta -parse_seqids -dbtype prot');
-    }
-    elsif ($opt_type =~ /dna/i) {
-        mkdir 'set_dna';
-        chdir 'set_dna';
-        run_this("db_unload_dna.pl $opt_db");
-        run_this('makeblastdb -in dna.fasta -input_type fasta -parse_seqids -dbtype nucl');
-    }
+    run_this("mkdir set_prot");
+    chdir 'set_prot';
+    run_this("db_unload_protein.pl $opt_db");
+    run_this('makeblastdb -in protein.fasta -input_type fasta -parse_seqids -dbtype prot');
+    chdir "..";
+    mkdir 'set_dna';
+    chdir 'set_dna';
+    run_this("db_unload_dna.pl $opt_db");
+    run_this('makeblastdb -in dna.fasta -input_type fasta -parse_seqids -dbtype nucl');
 }
 
 sub run_post_blast {
@@ -52,12 +47,7 @@ sub run_post_blast {
     run_this("mcxload -abc seq.abc -write-tab seq.dict -o seq.mci --stream-mirror --stream-neg-log10 -stream-tf 'ceil(200)'");
     run_this("mcl seq.mci -I $opt_mcl_i");
     run_this('mcxdump -icl out.seq.mci.I40 -o dump.seq.mci.I140 -tabr seq.dict');
-    
-    ($opt_type =~ /^pro/i) and
-        run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 protein");
-
-    ($opt_type =~ /^dna/i) and
-        run_this("db_load_groups.pl $opt_db dump.seq.mci.I140 dna");
+    run_this("db_load_groups.pl $opt_db dump.seq.mci.I140");
 }
 
 sub run_load {
@@ -66,28 +56,14 @@ sub run_load {
 }
 
 sub run_database {
-    run_this("sqlite3 $opt_db < /nfs/users/nfs_f/fy2/software/CoreGenome/config/core.sql");
+    run_this("sqlite3 $opt_db < /nfs/users/nfs_f/fy2/software/CoreGenomeUnofficial/config/core.sql");
 }
 
 sub args_are_okay {
 
-    return 0 unless (  defined $opt_type
-                and defined $opt_stage
-                and defined $opt_db);
-    return 0 unless $opt_type =~ /^(db|dna|prot)/i;
+    return 0 unless (defined $opt_stage and defined $opt_db);
     return 0 unless $opt_stage =~ /^(db|load|pre|post)/i;
     
-    if ($opt_stage =~  /^(pre|post)/i ) {
-        if ($opt_type =~ /^db/) {
-            print STDERR "-type (-t) option must be 'protein' or 'dna' for this stage ($opt_stage)\n";
-            return 0;
-        }
-    } 
-    else  {
-        print STDERR "Setting -type to 'db'\n" if ($opt_type !~ /^db/i);
-        $opt_type = 'db';
-    }
-
     if ($opt_stage !~ /^db/) {
         if (not -e $opt_db) {
             print STDERR "Database does not exist\n";
@@ -110,7 +86,7 @@ sub args_are_okay {
 
     if ($opt_stage =~ /^load/i) {
         if (@ARGV < 2) {
-            print STDERR 'You need to provide at .ffn and .faa files.';
+            print STDERR 'You need to provide .ffn and .faa files.';
             return 0;
         }
     }
@@ -147,7 +123,6 @@ B<run_core.pl> -d seq.db -t [db|dna|protein] -s [db|load|preblast|postblast]
 
  Options:
    -help|h        brief help message
-   -type|t        REQUIRED [db|dna|protein]
    -stage|s       REQUIRED [db|load|preblast|postblast]
    -database|d    REQUIRED database (A new DB name if stage = 'db')
    -inflation|i   Default = 4, mcl inflation value

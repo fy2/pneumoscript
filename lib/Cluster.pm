@@ -36,7 +36,5 @@ has member_count => (
     isa => 'Int',
     );
 
-
-
 no Moose;
 __PACKAGE__->meta->make_immutable;
