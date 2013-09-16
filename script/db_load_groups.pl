@@ -1,11 +1,16 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib '..';
+use FindBin qw($Bin);
+
+use lib "$Bin/../lib";
+use lib "$Bin/..";
+
 use Getopt::Long;
 use Pod::Usage;
 use Bio::SeqIO;
 use Genome::Schema;
+use CoreDB;
 
 my ($opt_help, $opt_man);
 
@@ -22,7 +27,13 @@ my ($DB, $mcl)  =  @ARGV;
 my $dsn = "DBI:SQLite:$DB";
 my $SCHEMA = Genome::Schema->connect("dbi:SQLite:$DB", { AutoCommit => 0 },);
 
-insert_groups();
+if ( there_are_no_groups_in_db() ) {
+    insert_groups();
+} 
+else {
+    print STDERR "Warning: You already have sequence clusters in your database. Not possible to load clusters twice. If you want to delete the existing clusters, run:\nsqlite3 [path to your seq.db] 'UPDATE sequences SET group_id= NULL;'\n";
+    exit;
+}
 
 sub insert_groups {
 
@@ -70,6 +81,20 @@ sub insert_groups {
     }
     $SCHEMA->txn_commit;
     print "$group_id groups inserted\n";
+}
+
+# We would not want to enter group_ids in a database
+# where there are already group_ids present.
+sub there_are_no_groups_in_db {
+    my $coredb = CoreDB->new(db => $DB) ;
+
+    my @got = $coredb->get_group_ids;
+    if (scalar @got == 0 ) {
+       return 1;
+    }
+    else {
+       return 0;
+    }
 }
 
 __END__

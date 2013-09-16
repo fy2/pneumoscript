@@ -175,10 +175,9 @@ END
     while(my ($id) = $sth->fetchrow_array) {
        push @ids, $id if defined $id;
     }
-    if (scalar @ids == 0) {
-        print STDERR "no groups are present in your database";
-        die;
-    }
+    #if (scalar @ids == 0) {
+        #print STDERR "no groups are present in your database";
+    #}
 
     return @ids;
 }

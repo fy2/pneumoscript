@@ -1,1 +1,3 @@
-# Take all the scripts in ./script dir and push their functionality into tested modules.
+# Compare the results of this version to double-cluster version.
+# Extend CoreUtil so that it gives some useful stats
+# Take all the scripts in ./script dir and push their functionality into well tested modules.

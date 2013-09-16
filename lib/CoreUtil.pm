@@ -20,6 +20,7 @@ sub make_protein_seqlen_matrix {
     my ($self) = @_;
 
     my @group_ids = $self->db->get_group_ids;
+    warn "no group ids found in db" unless scalar @group_ids;
     foreach my $id (@group_ids) {
         my @lens = sort { $a <=> $b } $self->db->get_clustered_protein_lengths_by_group_id($id);
         print join " ", ( "id_$id", @lens);
