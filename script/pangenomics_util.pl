@@ -2,7 +2,9 @@
 
 use strict;
 use warnings;
-use lib qw(/nfs/users/nfs_f/fy2/software/CoreGenomeUnofficial/lib /nfs/users/nfs_f/fy2/software/CoreGenomeUnofficial);
+use FindBin qw($Bin);
+use lib "$Bin/../lib";
+use lib "$Bin/..";
 use Data::Dumper;
 use Getopt::Long;
 use Pod::Usage;
@@ -10,7 +12,6 @@ use File::Spec;
 use CoreUtil;
 use CoreDB;
 use feature qw/switch/;
-
 
 
 my ($opt_help, $opt_man, $opt_cmd, $opt_db);

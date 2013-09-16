@@ -2,7 +2,10 @@
 
 use strict;
 use warnings;
-use lib qw(/nfs/users/nfs_f/fy2/software/CoreGenome/lib /nfs/users/nfs_f/fy2/software/CoreGenome);
+use FindBin qw($Bin);
+
+use lib "$Bin/../lib";
+use lib "$Bin/..";
 use Data::Dumper;
 use Getopt::Long;
 use Pod::Usage;
@@ -10,7 +13,7 @@ use File::Spec;
 use CoreStats;
 use CoreDB;
 
-my ($opt_help, $opt_type, $opt_db);
+my ($opt_help, $opt_db);
 
 GetOptions(
   'help|h'        => \$opt_help,
