@@ -28,14 +28,14 @@ load_isolates(@ARGV);
 sub load_isolates {
     my @isolate_files  = @_;
     
-    my $sth = $DBH->prepare("INSERT INTO isolates(sanger_id, remarks) VALUES (?,?)");
+    my $sth = $DBH->prepare("INSERT INTO isolates(sanger_id, remarks) VALUES (?,?)") or die $DBH->errstr;
 
     my $i = 0;
     my %seen;
     foreach my $filename (@isolate_files) {
         my ($name) = $filename =~ /(.+?)\./;
         next if ( $seen{$name} );
-        $sth->execute($name, $opt_remark);        
+        $sth->execute($name, $opt_remark) or die $DBH->errstr;        
         print "Inserting ", ++$i, " rows into database\n";
         $seen{$name} = 1;
     }

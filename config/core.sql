@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS isolates ;
 CREATE TABLE IF NOT EXISTS isolates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     remarks text,
-    sanger_id text
+    sanger_id text unique
 );
 
 -- -----------------------------------------------------
