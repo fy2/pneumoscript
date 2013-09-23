@@ -14,18 +14,22 @@ use CoreDB;
 use feature qw/switch/;
 
 
-my ($opt_help, $opt_man, $opt_cmd, $opt_db);
+my ($opt_help, $opt_man, $opt_cmd, $opt_db, $opt_list, $opt_group_id);
 
 GetOptions(
-  'help|h'     => \$opt_help,
-  'man|m'      => \$opt_man,
-  'database|d=s'  => \$opt_db,
-  'command|c=s'   => \$opt_cmd,
+  'help|h'       => \$opt_help,
+  'man|m'        => \$opt_man,
+  'command|c=s'  => \$opt_cmd,
+  'listfile|l=s' => \$opt_list,
+  'group_id|g=s' => \$opt_group_id,
+  
 ) or pod2usage(-verbose => 1) && exit;
 
 pod2usage(-verbose => 1) && exit if defined $opt_help;
 pod2usage(-verbose => 2) && exit if defined $opt_man;
-pod2usage(-verbose => 1) && exit unless ( (defined $opt_db) and (defined $opt_cmd) );
+pod2usage(-verbose => 1) && exit unless ( (scalar @ARGV == 1) and (defined $opt_cmd) );
+
+$opt_db = $ARGV[0];
 
 if (not -e $opt_db) {
     print STDERR "Database does not exist\n";
@@ -36,10 +40,29 @@ $opt_db = File::Spec->rel2abs($opt_db);
 my $util = CoreUtil->new(db => CoreDB->new(db=>$opt_db) );
 
 given ($opt_cmd) {
-    when( 'prot_mtx')       { $util->make_protein_seqlen_matrix }
-    when( 'prot_seq_by_id') { $util->seq_by_protein_group_id  }
-    when( 'dna_seq_by_id')  { continue }
-    default                 { die "unknown command: '$opt_cmd'" }
+	when( 'list_groups')           { $util->list_groups }
+    when( 'fasta_by_list')         { fasta_by_list($opt_list) }
+    when( 'fasta_by_group_id')     { fasta_by_group_id($opt_group_id) }
+    when( 'protein_length_matrix') { $util->protein_length_matrix }
+    default                        { die "unknown command: '$opt_cmd'" }
+}
+
+sub fasta_by_list {
+	if (not defined $opt_list) {
+		pod2usage(-verbose => 1) && exit;
+	}
+	else {
+		$util->fasta_by_list($opt_list);
+	}
+}
+
+sub fasta_by_group_id {
+	if (not defined $opt_group_id) {
+		pod2usage(-verbose => 1) && exit;
+	}
+	else {
+		$util->fasta_by_group_id($opt_group_id);
+	}
 }
 
 __END__
@@ -48,11 +71,22 @@ __END__
 
 =head1 SYNOPSIS
 
+B<pangenomics_util.pl> -command [see command options below] seq.db
+
  Options:
    -help|h        brief help message
-   -database|d    path the to database
-   -command|c     command to execute (see -man for more details)
+   -listfile|l	  file containing group IDs
+   -group_id|g    a group ID
+   -command|c     command to execute (see options below)
 
+"B<command>" accepts these options:
+
+=item "list_groups": list groups.
+
+=item "fasta_by_list" (needs -listfile): make fasta files for groups in listfile.
+
+=item "fasta_by_group_id" (needs -group_id): print fasta sequences for a group id.
+	
 =head1 DESCRIPTION
 
 =over 8

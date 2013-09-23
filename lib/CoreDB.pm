@@ -175,10 +175,10 @@ END
     while(my ($id) = $sth->fetchrow_array) {
        push @ids, $id if defined $id;
     }
-    #if (scalar @ids == 0) {
-        #print STDERR "no groups are present in your database";
-    #}
-
+    if (scalar @ids == 0) {
+        warn "No groups are present in your database.";
+    }
+    
     return @ids;
 }
 
@@ -214,6 +214,8 @@ with proteins, dna and isolates for some more info.
 
 sub get_elements_by_group_id {
     my ($self, $group_id) = @_;
+    die "no group id provided" unless (defined $group_id);
+    
     my $sql =<<END;
 SELECT sequences.id, 
         isolates.sanger_id, 
