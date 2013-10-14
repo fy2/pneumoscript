@@ -176,7 +176,7 @@ END
        push @ids, $id if defined $id;
     }
     if (scalar @ids == 0) {
-        warn "No groups are present in your database.";
+        #warn "No groups are present in your database.";
     }
     
     return @ids;
