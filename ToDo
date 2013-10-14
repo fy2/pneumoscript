@@ -1,3 +1,6 @@
-# Compare the results of this version to double-cluster version.
+# Make sure there is a check in db_load_sequences.pl for files
+# where there are proteins without corresponding nucleotide sequences.
+
 # Extend CoreUtil so that it gives some useful stats
+
 # Take all the scripts in ./script dir and push their functionality into well tested modules.
