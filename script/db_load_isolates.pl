@@ -33,7 +33,7 @@ sub load_isolates {
     my $i = 0;
     my %seen;
     foreach my $filename (@isolate_files) {
-        my ($name) = $filename =~ /(.+?)\./;
+        my ($name) = $filename =~ /(.+)\./;
         next if ( $seen{$name} );
         $sth->execute($name, $opt_remark) or die $DBH->errstr;        
         print "Inserting ", ++$i, " rows into database\n";

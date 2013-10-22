@@ -31,7 +31,7 @@ sub load_sequences {
     my @files = @_; #.faa annotation files
     #faa are the protein annotations...
     foreach my $faa ( grep(/faa$/, @files) ) {
-        my ($prefix) = $faa =~ /(.+?)\./;
+        my ($prefix) = $faa =~ /(.+)\./;
         my $ffn = $prefix . '.ffn';
         my $isolate_id = get_isolate_id_by_name($prefix);
         db_insert($faa, $ffn, $isolate_id);
