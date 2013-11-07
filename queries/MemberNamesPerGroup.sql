@@ -1,4 +1,5 @@
 .header on
+.mode tabs
 SELECT group_id AS 'GroupID'
     , COUNT(*) AS 'SequenceCount'
     , COUNT(DISTINCT(isolate_id)) AS 'MemberCount'

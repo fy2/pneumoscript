@@ -1,4 +1,5 @@
 .header on
+.mode tabs
 SELECT group_id AS 'GroupID'
      , GROUP_CONCAT(isolates.remarks) AS 'MemberType'
 FROM sequences

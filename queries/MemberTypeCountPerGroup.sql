@@ -1,4 +1,5 @@
 .header on
+.mode tabs
 SELECT group_id AS 'GroupID'
      , isolates.remarks AS 'MemberType'
      , COUNT(sequences.id) AS 'SequenceCount'

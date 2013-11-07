@@ -1,4 +1,5 @@
 .header on
+.mode tabs
 SELECT
        group_id AS 'GroupID'
      , isolates.sanger_id AS 'MemberName'

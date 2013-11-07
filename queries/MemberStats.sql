@@ -1,4 +1,5 @@
 .header on
+.mode tabs
 SELECT 
       isolates.id AS 'Member'
     , isolates.sanger_id AS 'MemberName'
