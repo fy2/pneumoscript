@@ -73,9 +73,37 @@ END
     return $self->clusters;
 }
 
+=head2 cluster_sth
+
+return a DBI sth for presence/absence matrix related data.
+utilised mainly by "CoreUtil.pm"
+
+=cut
+
+sub cluster_sth {
+    my $self = shift;
+    my $sql =<<END;
+	SELECT
+	      group_id AS 'group_id'
+	    , SUBSTR(GROUP_CONCAT(sequences.product), 1,50) AS 'annotation'
+	    , COUNT(*) AS 'sequence_count'
+	    , COUNT(DISTINCT(isolate_id)) AS 'member_count'
+	    , GROUP_CONCAT(DISTINCT(isolates.sanger_id)) AS 'member_names'
+	FROM sequences
+	    , isolates
+	WHERE sequences.isolate_id = isolates.id
+	    AND group_id IS NOT NULL
+	GROUP BY group_id;
+END
+    my $sth = $self->_dbh->prepare($sql);
+    $sth->execute() || die $sth->errstr;;
+    return $sth;
+}
+
+
 =head2 load_isolates
 
-load isolate_ids and remark into "isolates" attribute of $self
+Fetch isolate_ids and remark from DB
 
 =cut
 
@@ -89,8 +117,11 @@ END
     my $sth = $self->_dbh->prepare($sql);
     $sth->execute();
     while(my @row = $sth->fetchrow_array) {
-        my $isolate = Isolate->new(id => $row[0],
-                                   remark => $row[1],
+    	my $id = $row[0];
+    	my $type = (defined $row[1]) ? $row[1] : "NA";
+    	
+        my $isolate = Isolate->new(id => $id,
+                                   remark => $type,
                                    );
         push @{ $self->isolates }, $isolate;
     }

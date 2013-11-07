@@ -42,6 +42,7 @@ my $util = CoreUtil->new(db => CoreDB->new(db=>$opt_db) );
 given ($opt_cmd) {
 	when( 'list_groups')           { $util->list_groups }
     when( 'fasta_by_list')         { fasta_by_list($opt_list) }
+    when( 'presence_matrix')       { $util->presence_matrix() }
     when( 'fasta_by_group_id')     { fasta_by_group_id($opt_group_id) }
     when( 'protein_length_matrix') { $util->protein_length_matrix }
     default                        { die "unknown command: '$opt_cmd'" }
@@ -86,6 +87,9 @@ B<pangenomics_util.pl> -command [see command options below] seq.db
 =item "fasta_by_list" (needs -listfile): make fasta files for groups in listfile.
 
 =item "fasta_by_group_id" (needs -group_id): print fasta sequences for a group id.
+
+=item "presence_matrix": print a matrix of presence/absence for each isolate in each group.
+
 	
 =head1 DESCRIPTION
 

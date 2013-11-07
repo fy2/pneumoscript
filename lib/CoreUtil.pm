@@ -103,6 +103,61 @@ sub _make_fasta_header {
 	return join "_", ('>' . $group_id , $elem->id, $elem->sanger_id);
 }
 
+=head2 presence_matrix
+
+=cut
+
+sub presence_matrix {
+	my $self = shift;
+	
+	my $isolates = $self->db->load_isolates;
+	my @ids   = map {$_->id } @$isolates; 
+	my @types = map {$_->remark} @$isolates;
+	
+    print join ("\t",
+        (  "#GroupID"
+          , "Annotation (Truncated)"
+          , "MemberCount"
+          , "SequenceCount"
+          , @types ));	 
+	print "\n";
+
+    print join ("\t",
+        (  "#."
+          , "."
+          , "."
+          , "."
+          , @ids));	 
+	print "\n";
+
+	#queries the DB using DBI and returns sth, see CoreDB
+	my $sth = $self->db->cluster_sth;
+		
+	
+	while(my $row = $sth->fetchrow_hashref) {
+	    my %seen; #the isolates in this cluster;
+	    foreach my $sanger_id (split ',', $row->{member_names}) {
+	    	$seen{$sanger_id} = 1;
+	    }
+	       
+	    #iterarte through all the isolate ids
+	    my @presence;
+	    for my $id (@ids) {
+	        my $status = (exists $seen{$id} ) ? '++' : '--';
+	        push @presence, $status;
+	    }
+	    my $status_str = join "\t", @presence;
+	    
+	    print join ("\t",
+	        (  $row->{group_id}
+	         , $row->{annotation}
+	         , $row->{member_count}
+	         , $row->{sequence_count}
+	         , $status_str ));
+	    print  "\n";
+	}
+}
+
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
