@@ -53,4 +53,19 @@ Run this pipeline ONLY on "farm3".
     run_core.pl -stage postblast -database ../seq.db -blastfile out.blast
 
 
-#Now you can run queries or scripts to inspect the results. seq.db serves as the single central access point. See "Queries.sql" for examples.
+
+####################
+#INSPECTING RESULTS#
+####################
+
+#1 For presence/Absence matrix, run:
+    pangenomics_util.pl -c presence_matrix seq.db
+
+#2 If you want to create multi-fasta files for the sequences in a given homologous group:
+    a) Create a simple text document with the group_ids you are interested in. Put each ID in a new line. Name the file 'group_ids.txt'.
+    b) Then run this:
+    pangenomics_util.pl -command fasta_by_list -listfile group_ids.txt seq.db
+
+    Beware that this command will create 2 files per group id in the directory where you run it, so don’t put too many (I.e. don’t put thousands). One file will contain the nucleotide sequences and the other one will have the protein sequences. The file name will start with the group id.
+
+#3 You can also run queries to inspect the results (see 'Queries.sql' for examples).
