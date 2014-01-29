@@ -22,11 +22,11 @@ Run this pipeline ONLY on "farm3".
  # We will need both 'ffn' and 'faa' for each. I am using "8786_8#49" and "8786_8#50"
  # isolates for this example run.
 
-    annotationfind -t lane -id 8786_8#49 -s -f ffn
-    annotationfind -t lane -id 8786_8#49 -s -f faa
+    annotationfind -t lane -id 8786_8#49 -symlink -f ffn
+    annotationfind -t lane -id 8786_8#49 -symlink -f faa
 
-    annotationfind -t lane -id 8786_8#50 -s -f ffn
-    annotationfind -t lane -id 8786_8#50 -s -f faa
+    annotationfind -t lane -id 8786_8#50 -symlink -f ffn
+    annotationfind -t lane -id 8786_8#50 -symlink -f faa
 
 #2 Load the isolates and their annotations into your DB (bsub this command):
  # Note: It is possible to run the loading stage multiple times in different directories which 
