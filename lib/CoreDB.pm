@@ -47,7 +47,7 @@ distinct member names
 =cut
 
 sub load_clusters {
-    my $self = shift;
+    my ($self, $remark) = @_;
     my $sql =<<END;
     SELECT group_id AS 'Group'
         , COUNT(*) AS 'Sequence_Count'
@@ -60,8 +60,31 @@ sub load_clusters {
         AND group_id IS NOT NULL
     GROUP BY group_id;
 END
-    my $sth = $self->_dbh->prepare($sql);
-    $sth->execute();
+
+    my $sqlConditional =<<END;
+    SELECT group_id AS 'Group'
+        , COUNT(*) AS 'Sequence_Count'
+        , isolates.remarks AS 'Remarks'
+        , COUNT(DISTINCT(isolate_id)) AS 'Member_Count'
+        , GROUP_CONCAT(DISTINCT(isolates.sanger_id)) AS 'Member_Names'
+    FROM sequences
+        , isolates
+    WHERE sequences.isolate_id = isolates.id
+        AND group_id IS NOT NULL
+        AND isolates.remarks = ?
+    GROUP BY group_id;
+END
+
+    my $sth;
+    if (defined $remark) {
+         $sth = $self->_dbh->prepare($sqlConditional);
+         $sth->execute($remark);
+    }
+    else {
+        $sth = $self->_dbh->prepare($sql);
+        $sth->execute();     
+    }
+    
     while(my @row = $sth->fetchrow_array) {
         my @members = split ',', $row[4];
         my $cluster = Cluster->new(id => $row[0],
@@ -108,21 +131,39 @@ Fetch isolate_ids and remark from DB
 =cut
 
 sub load_isolates {
-    my $self = shift;
+    my ($self, $remark) = @_;
+
     my $sql =<<END;
     SELECT  sanger_id
           , remarks 
     FROM isolates;
 END
-    my $sth = $self->_dbh->prepare($sql);
-    $sth->execute();
+
+    my $sqlConditional =<<END;
+    SELECT  sanger_id
+          , remarks 
+    FROM isolates
+    WHERE isolates.remarks = ?;
+END
+
+    my $sth;
+    if (defined $remark) {
+         $sth = $self->_dbh->prepare($sqlConditional);
+         $sth->execute($remark);
+     
+    }
+    else {
+        $sth = $self->_dbh->prepare($sql);
+        $sth->execute();     
+    }
+    
     while(my @row = $sth->fetchrow_array) {
+    	
     	my $id = $row[0];
     	my $type = (defined $row[1]) ? $row[1] : "NA";
     	
-        my $isolate = Isolate->new(id => $id,
-                                   remark => $type,
-                                   );
+        my $isolate = Isolate->new(id => $id,remark => $type,);
+        
         push @{ $self->isolates }, $isolate;
     }
     return $self->isolates;
